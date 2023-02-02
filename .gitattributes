@@ -1,0 +1,13 @@
+* text=auto
+
+*.js text
+*.json text
+*.css text
+*.html text
+*.ts text
+
+# Declare files that should not be touched
+*.jpg binary
+*.png binary
+*.pdf binary
+*.gif binary
