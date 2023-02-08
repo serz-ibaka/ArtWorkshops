@@ -11,8 +11,10 @@ import userRouter from "./routers/user.routes";
 import workshopRouter from "./routers/workshop.routes";
 
 const app = express();
+
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
 mongoose.connect("mongodb://127.0.0.1:27017/art-workshops");
 const connection = mongoose.connection;

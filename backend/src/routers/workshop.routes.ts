@@ -12,7 +12,7 @@ workshopRouter
   .get((req, res) => new WorkshopController().getTopWorkshops(req, res));
 
 workshopRouter
-  .route("/get-workshop")
+  .route("/get-workshop/:id")
   .get((req, res) => new WorkshopController().getWorkshop(req, res));
 
 workshopRouter

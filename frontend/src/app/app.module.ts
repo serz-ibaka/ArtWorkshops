@@ -11,6 +11,8 @@ import { RegisterComponent } from './register/register.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -30,12 +32,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     HttpClientModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDividerModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,
     MatCheckboxModule,
     MatSnackBarModule,
     MatTooltipModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

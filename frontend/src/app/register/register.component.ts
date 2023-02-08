@@ -6,9 +6,10 @@ import {
   AbstractControl,
   FormControl,
   FormGroup,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { UserService } from '../services/user.service';
+import { checkImage } from '../validators';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +29,18 @@ export class RegisterComponent implements OnInit {
   hideConfirmPassword = true;
   hide = true;
 
-  usernames: string[] = [];
+  message = '';
+
+  imageValid = true;
+  image: string | null = null;
+  height = 200;
+  width = 200;
+
+  passwordMatchValidator(group: AbstractControl) {
+    const password = group.get('password')?.value;
+    const confirm = group.get('confirmPassword')?.value;
+    return password == confirm ? null : { notMatched: true };
+  }
 
   formGroup = new FormGroup(
     {
@@ -62,12 +74,6 @@ export class RegisterComponent implements OnInit {
     [this.passwordMatchValidator]
   );
 
-  passwordMatchValidator(group: AbstractControl) {
-    const password = group.get('password')?.value;
-    const confirm = group.get('confirmPassword')?.value;
-    return password === confirm ? null : { notMatched: true };
-  }
-
   toggleOrganization() {
     if (this.formGroup.get('organizer')?.value) {
       document.getElementById('organization-name')!!.style.display = 'block';
@@ -83,12 +89,67 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  onFileSelected(event: any) {}
+  onFileSelected(event: any) {
+    if (event.target.files.length == 0) {
+      this.imageValid = true;
+      return;
+    }
+    const imageFile = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const image = new Image();
+      image.onload = () => {
+        this.height = image.height;
+        this.width = image.width;
+        if (!checkImage(this.height, this.width)) {
+          this.imageValid = false;
+          this.image = null;
+        }
+      };
+      image.src = event.target.result as string;
+      this.image = reader.result as string;
+      console.log(this.image);
+    };
+    reader.readAsDataURL(imageFile);
+  }
+
+  removeImage() {
+    this.imageValid = true;
+    this.image = null;
+  }
 
   register() {
+    const username = this.formGroup.get('username')?.value ?? '';
+
+    if (!this.imageValid) {
+      this.message = 'Image size is not valid';
+    }
+
     if (this.formGroup.valid) {
-      this._snackBar.open('Registration request successfully sent!', 'Close');
-      this.router.navigate(['/']);
+      this.accountService
+        .register({
+          username: this.formGroup.get('username')?.value ?? '',
+          password: this.formGroup.get('password')?.value ?? '',
+          firstname: this.formGroup.get('firstname')?.value ?? '',
+          lastname: this.formGroup.get('lastname')?.value ?? '',
+          phone: this.formGroup.get('phone')?.value ?? '',
+          email: this.formGroup.get('email')?.value ?? '',
+          organizer: this.formGroup.get('organizer')?.value ?? false,
+          organizationName: this.formGroup.get('organizer')?.value ?? null,
+          organizationAddress: this.formGroup.get('organizer')?.value ?? null,
+          organizationNumber: this.formGroup.get('organizer')?.value ?? null,
+          image: this.image,
+        })
+        .subscribe((res: any) => {
+          if (res['status'] == 'success') {
+            this._snackBar.open(
+              'Registration request successfully sent!',
+              'Close'
+            );
+            this.router.navigate(['/']);
+          } else {
+          }
+        });
     }
   }
 }
