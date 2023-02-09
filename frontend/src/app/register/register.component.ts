@@ -21,9 +21,9 @@ export class RegisterComponent implements OnInit {
     private accountService: AccountService,
     private router: Router,
     private _snackBar: MatSnackBar
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   hidePassword = true;
   hideConfirmPassword = true;
@@ -98,22 +98,26 @@ export class RegisterComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = (e) => {
       const image = new Image();
+      console.log('asdasdasd')
       image.onload = () => {
-        this.height = image.height;
-        this.width = image.width;
+        console.log('qweqweqwe')
         if (!checkImage(this.height, this.width)) {
           this.imageValid = false;
           this.image = null;
         }
       };
       image.src = event.target.result as string;
+      image.src = reader.result as string;
       this.image = reader.result as string;
-      console.log(this.image);
+      this.height = image.height;
+      this.width = image.width;
     };
     reader.readAsDataURL(imageFile);
   }
 
   removeImage() {
+    console.log(this.width)
+    console.log(this.height)
     this.imageValid = true;
     this.image = null;
   }
