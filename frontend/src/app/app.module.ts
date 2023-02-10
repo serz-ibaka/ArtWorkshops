@@ -20,9 +20,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { LoginComponent } from './login/login.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 @NgModule({
-  declarations: [AppComponent, RegisterComponent],
+  declarations: [AppComponent, RegisterComponent, LoginComponent, AdminLoginComponent],
   imports: [
     AppRoutingModule,
     BrowserModule,

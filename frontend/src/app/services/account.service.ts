@@ -10,7 +10,6 @@ export class AccountService {
   uri: string = 'http://127.0.0.1:4000/account';
 
   register(data: any) {
-    console.log(data);
     return this.httpClient.post(`${this.uri}/register`, data);
   }
 

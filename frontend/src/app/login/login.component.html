@@ -1,0 +1,55 @@
+<div class="login-div">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+      <mat-card-subtitle
+        >Don't have an account? Register
+        <a [routerLink]="['/register']">Home</a></mat-card-subtitle
+      >
+      <mat-card-subtitle
+        >Login to your participant or organizer account</mat-card-subtitle
+      >
+    </mat-card-header>
+
+    <mat-card-content>
+      <form class="login-form" [formGroup]="formGroup">
+        <mat-form-field appearance="fill">
+          <mat-label>Username: </mat-label>
+          <input matInput formControlName="username" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Password: </mat-label>
+          <input
+            matInput
+            formControlName="password"
+            [type]="hidePassword ? 'password' : 'text'"
+            required
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword"
+          >
+            <mat-icon>{{
+              hidePassword ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="formGroup.invalid"
+          (click)="login()"
+        >
+          Login
+        </button>
+
+        <span style="color: red">{{ message }}</span>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

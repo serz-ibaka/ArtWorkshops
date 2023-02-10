@@ -1,104 +1,220 @@
 <div class="registration-div">
-    <mat-card class="registration-card">
-        <mat-card-header>
-            <mat-card-title>Registration</mat-card-title>
-            <mat-card-subtitle>Create registration request</mat-card-subtitle>
-        </mat-card-header>
-        
-        <mat-card-content>
+  <mat-card class="registration-card">
+    <mat-card-header>
+      <mat-card-title>Registration</mat-card-title>
+      <mat-card-subtitle>Create registration request</mat-card-subtitle>
+    </mat-card-header>
 
-            <form class="registration-form" [formGroup]="formGroup">
+    <mat-card-content>
+      <form class="registration-form" [formGroup]="formGroup">
+        <div class="row">
+          <div class="col-6 registration-form">
+            <mat-form-field appearance="fill">
+              <mat-label>Firstname: </mat-label>
+              <input matInput formControlName="firstname" />
+              <mat-error *ngIf="formGroup.get('firstname')?.invalid"
+                >Firstname is required</mat-error
+              >
+            </mat-form-field>
 
-                <mat-form-field appearance="fill">
-                    <mat-label>Firstname: </mat-label>
-                    <input matInput formControlName="firstname">
-                    <mat-error *ngIf="formGroup.get('firstname')?.invalid">Firstname is required</mat-error>
-                </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Lastname: </mat-label>
+              <input matInput formControlName="lastname" required />
+              <mat-error *ngIf="formGroup.get('lastname')?.invalid"
+                >Lastname is required</mat-error
+              >
+            </mat-form-field>
 
-                <mat-form-field appearance="fill">
-                    <mat-label>Lastname: </mat-label>
-                    <input matInput formControlName="lastname" required>
-                    <mat-error *ngIf="formGroup.get('lastname')?.invalid">Lastname is required</mat-error>
-                </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Username: </mat-label>
+              <input matInput formControlName="username" />
+              <mat-error *ngIf="formGroup.get('username')?.invalid"
+                >Invalid username</mat-error
+              >
+              <button
+                mat-icon-button
+                matSuffix
+                matTooltip="Username should have at least 4 characters, and consist of letters, digits and underscore"
+                [matTooltipPosition]="'after'"
+                aria-label="Button that displays a tooltip in various positions"
+              >
+                <mat-icon>information</mat-icon>
+              </button>
+            </mat-form-field>
 
-                <mat-form-field appearance="fill">
-                    <mat-label>Username: </mat-label>
-                    <input matInput formControlName="username">
-                    <mat-error *ngIf="formGroup.get('username')?.invalid">Invalid username</mat-error>
-                    <button mat-icon-button matSuffix
-                        matTooltip="Username should have at least 4 characters, and consist of letters, digits and underscore"
-                        [matTooltipPosition]="'after'" aria-label="Button that displays a tooltip in various positions">
-                        <mat-icon>information</mat-icon>
-                    </button>
-                </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Password: </mat-label>
+              <input
+                matInput
+                formControlName="password"
+                [type]="hidePassword ? 'password' : 'text'"
+                required
+              />
+              <mat-error *ngIf="formGroup.get('password')?.invalid"
+                >Invalid password format</mat-error
+              >
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hidePassword = !hidePassword"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hidePassword"
+              >
+                <mat-icon>{{
+                  hidePassword ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                matSuffix
+                matTooltip="Password should have 8-16 characters, at least one uppercase letter, lowercase letter, digit and special character"
+                [matTooltipPosition]="'after'"
+                aria-label="Button that displays a tooltip in various positions"
+              >
+                <mat-icon>information</mat-icon>
+              </button>
+            </mat-form-field>
 
-                <mat-form-field appearance="fill">
-                    <mat-label>Password: </mat-label>
-                    <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" required>
-                    <mat-error *ngIf="formGroup.get('password')?.invalid">Invalid password format</mat-error>
-                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
-                        [attr.aria-pressed]="hidePassword">
-                        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    </button>
-                    <button mat-icon-button matSuffix
-                        matTooltip="Password should have 8-16 characters, at least one uppercase letter, lowercase letter, digit and special character"
-                        [matTooltipPosition]="'after'" aria-label="Button that displays a tooltip in various positions">
-                        <mat-icon>information</mat-icon>
-                    </button>
-                </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Confirm password: </mat-label>
+              <input
+                matInput
+                formControlName="confirmPassword"
+                [type]="hideConfirmPassword ? 'password' : 'text'"
+              />
+              <mat-error
+                *ngIf="formGroup.get('confirmPassword')?.errors?.['notMatched']"
+                >Passwords do not match</mat-error
+              >
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hideConfirmPassword = !hideConfirmPassword"
+                [attr.aria-label]="'Hide confirm password'"
+                [attr.aria-pressed]="hideConfirmPassword"
+              >
+                <mat-icon>{{
+                  hideConfirmPassword ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+            </mat-form-field>
 
-                <mat-form-field appearance="fill">
-                    <mat-label>Confirm password: </mat-label>
-                    <input matInput formControlName="confirmPassword" [type]="hideConfirmPassword ? 'password' : 'text'">
-                    <mat-error *ngIf="formGroup.get('confirmPassword')?.errors?.['notMatched']">Passwords do not
-                        match</mat-error>
-                    <button mat-icon-button matSuffix (click)=" hideConfirmPassword=!hideConfirmPassword"
-                        [attr.aria-label]="'Hide confirm password'" [attr.aria-pressed]="hideConfirmPassword">
-                        <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    </button>
-                </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Phone: </mat-label>
+              <input matInput formControlName="phone" />
+              <mat-error *ngIf="formGroup.get('phone')?.invalid"
+                >Invalid phone format</mat-error
+              >
+            </mat-form-field>
 
-                <mat-form-field appearance="fill">
-                    <mat-label>Phone: </mat-label>
-                    <input matInput formControlName="phone">
-                    <mat-error *ngIf="formGroup.get('phone')?.invalid">Invalid phone format</mat-error>
-                </mat-form-field>
-                
-                <mat-form-field appearance="fill">
-                    <mat-label>Email: </mat-label>
-                    <input matInput formControlName="email">
-                    <mat-error *ngIf="formGroup.get('email')?.invalid">Invalid email format</mat-error>
-                </mat-form-field>
-                
-                <mat-checkbox formControlName="organizer" (change)="toggleOrganization()">Register as
-                    organizer</mat-checkbox>
-                
-                    <mat-form-field id="organization-name" appearance="fill" style="display: none; ">
-                    <mat-label>Organization name: </mat-label>
-                    <input matInput formControlName="organizationName">
-                </mat-form-field>
-                
-                <mat-form-field id="organization-address" appearance="fill" style="display: none; ">
-                    <mat-label>Organization address: </mat-label>
-                    <input matInput formControlName="organizationAddress">
-                </mat-form-field>
-                
-                <mat-form-field id="organization-number" appearance="fill" style="display: none; ">
-                    <mat-label>Organization number: </mat-label>
-                    <input matInput formControlName="organizationNumber">
-                </mat-form-field>
-                
-                <button mat-raised-button type="button" (click)="fileInput.click()">Profile Image</button>
-                <input type="file" (change)="onFileSelected($event)" #fileInput hidden>
-                <button mat-raised-button type="button" (click)="removeImage()">Remove Image</button>
-                
-                <button mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="register()">Register</button>
-                
-                <mat-error *ngIf="formGroup.hasError('notMatched')">Passwords do not match</mat-error>
-                <span *ngIf="!imageValid">Image is not valid size</span>
-                
-            </form>
-            
-        </mat-card-content>
-    </mat-card>
+            <mat-form-field appearance="fill">
+              <mat-label>Email: </mat-label>
+              <input matInput formControlName="email" />
+              <mat-error *ngIf="formGroup.get('email')?.invalid"
+                >Invalid email format</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="col-6 registration-form">
+            <mat-checkbox
+              formControlName="organizer"
+              (change)="toggleOrganization()"
+              >Register as organizer</mat-checkbox
+            >
+
+            <mat-form-field
+              id="organization-name"
+              appearance="fill"
+              style="display: none"
+            >
+              <mat-label>Name: </mat-label>
+              <input matInput formControlName="organizationName" />
+            </mat-form-field>
+
+            <mat-form-field
+              id="organization-country"
+              appearance="fill"
+              style="display: none"
+            >
+              <mat-label>Country: </mat-label>
+              <input matInput formControlName="organizationCountry" />
+            </mat-form-field>
+
+            <mat-form-field
+              id="organization-city"
+              appearance="fill"
+              style="display: none"
+            >
+              <mat-label>City: </mat-label>
+              <input matInput formControlName="organizationCity" />
+            </mat-form-field>
+
+            <mat-form-field
+              id="organization-zip-code"
+              appearance="fill"
+              style="display: none"
+            >
+              <mat-label>Zip Code: </mat-label>
+              <input matInput formControlName="organizationZipCode" />
+            </mat-form-field>
+
+            <mat-form-field
+              id="organization-street"
+              appearance="fill"
+              style="display: none"
+            >
+              <mat-label>Street: </mat-label>
+              <input matInput formControlName="organizationStreet" />
+            </mat-form-field>
+
+            <mat-form-field
+              id="organization-street-number"
+              appearance="fill"
+              style="display: none"
+            >
+              <mat-label>Street Number: </mat-label>
+              <input matInput formControlName="organizationStreetNumber" />
+            </mat-form-field>
+
+            <mat-form-field
+              id="organization-number"
+              appearance="fill"
+              style="display: none"
+            >
+              <mat-label>Organization number: </mat-label>
+              <input matInput formControlName="organizationNumber" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <button mat-raised-button type="button" (click)="fileInput.click()">
+          Profile Image
+        </button>
+        <input
+          type="file"
+          (change)="onFileSelected($event)"
+          #fileInput
+          hidden
+        />
+        <button mat-raised-button type="button" (click)="removeImage()">
+          Remove Image
+        </button>
+
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="formGroup.invalid"
+          (click)="register()"
+        >
+          Register
+        </button>
+
+        <mat-error *ngIf="formGroup.hasError('notMatched')"
+          >Passwords do not match</mat-error
+        >
+        <span style="color: red">{{ message }}</span>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>
