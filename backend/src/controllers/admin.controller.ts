@@ -1,7 +1,20 @@
 import express from "express";
+import User from "../models/user";
 
 export class AdminController {
-  adminLogin = (req: express.Request, res: express.Response) => {};
+  adminLogin = async (req: express.Request, res: express.Response) => {
+    const admin = await User.findOne({
+      username: req.body.username,
+      password: req.body.password,
+      type: "administrator",
+    });
+
+    if (admin == null) {
+      res.json({ status: "error", message: "Wrong username or password" });
+    } else {
+      res.json({ status: "ok" });
+    }
+  };
 
   acceptUser = (req: express.Request, res: express.Response) => {};
 

@@ -8,7 +8,7 @@ export class AccountController {
       $or: [{ username: req.body.username }, { email: req.body.email }],
     });
 
-    if (existing) {
+    if (existing == null) {
       let imagePath = `${req.body.username}_${Date.now()}`;
 
       await new User({
@@ -19,9 +19,15 @@ export class AccountController {
         phone: req.body.phone,
         email: req.body.email,
         organization: {
-          organizationName: req.body.organizationName,
-          organizationAddress: req.body.organizationAddress,
-          organizationNumber: req.body.organizationNumber,
+          name: req.body.organizationName,
+          address: {
+            country: req.body.organizationCountry,
+            city: req.body.organizationCity,
+            zipCode: req.body.organizationZipCode,
+            street: req.body.organizationStreetNumber,
+            number: req.body.organizationStreetNumber,
+          },
+          number: req.body.organizationNumber,
         },
         status: "pending",
         type: req.body.organizer ? "organizer" : "participant",
@@ -35,11 +41,28 @@ export class AccountController {
 
       res.status(200).json({ status: "ok" });
     } else {
-      res.status(400).json({ status: "error" });
+      res.json({ status: "error", message: "Username or email is not unique" });
     }
   };
 
-  login = (req: express.Request, res: express.Response) => {};
+  login = async (req: express.Request, res: express.Response) => {
+    const user = await User.findOne({
+      username: req.body.username,
+      password: req.body.password,
+      type: { $ne: "administrator" },
+    });
+
+    if (user == null) {
+      res.json({
+        status: "error",
+        message: "Username or password is incorrect",
+      });
+    } else if (user.status == "pending") {
+      res.json({ status: "error", message: "User registration is pending" });
+    } else {
+      res.json({ status: "ok", username: user.username, type: user.type });
+    }
+  };
 
   editInfo = (req: express.Request, res: express.Response) => {};
 
