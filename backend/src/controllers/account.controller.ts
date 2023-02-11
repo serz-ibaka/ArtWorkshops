@@ -14,7 +14,7 @@ export class AccountController {
       await new User({
         username: req.body.username,
         password: req.body.password,
-        firstname: req.body.fistname,
+        firstname: req.body.firstname,
         lastname: req.body.lastname,
         phone: req.body.phone,
         email: req.body.email,
@@ -59,6 +59,8 @@ export class AccountController {
       });
     } else if (user.status == "pending") {
       res.json({ status: "error", message: "User registration is pending" });
+    } else if (user.status == "rejected") {
+      res.json({ status: "error", message: "User registration is rejected" });
     } else {
       res.json({ status: "ok", username: user.username, type: user.type });
     }

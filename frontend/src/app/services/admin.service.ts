@@ -41,7 +41,7 @@ export class AdminService {
     return this.httpClient.post(`${this.uri}/edit-workshop`, data);
   }
 
-  getAllUsers(data: any) {
+  getAllUsers() {
     return this.httpClient.get(`${this.uri}/get-all-users`);
   }
 }

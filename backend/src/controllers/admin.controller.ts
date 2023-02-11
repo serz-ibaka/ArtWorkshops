@@ -16,9 +16,21 @@ export class AdminController {
     }
   };
 
-  acceptUser = (req: express.Request, res: express.Response) => {};
+  acceptUser = async (req: express.Request, res: express.Response) => {
+    await User.updateOne(
+      { username: req.body.username },
+      { $set: { status: "active" } }
+    );
+    res.json({ status: "ok" });
+  };
 
-  rejectUser = (req: express.Request, res: express.Response) => {};
+  rejectUser = async (req: express.Request, res: express.Response) => {
+    await User.updateOne(
+      { username: req.body.username },
+      { $set: { status: "rejected" } }
+    );
+    res.json({ status: "ok" });
+  };
 
   addUser = (req: express.Request, res: express.Response) => {};
 
@@ -30,5 +42,11 @@ export class AdminController {
 
   editWorkshop = (req: express.Request, res: express.Response) => {};
 
-  getAllUsers = (req: express.Request, res: express.Response) => {};
+  getAllUsers = async (req: express.Request, res: express.Response) => {
+    const users = await User.find(
+      { type: { $in: ["participant", "organizer"] } },
+      "username firstname lastname email phone organization type status"
+    );
+    res.json({ status: "ok", users: users });
+  };
 }
