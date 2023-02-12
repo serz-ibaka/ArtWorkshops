@@ -20,6 +20,14 @@ adminRouter
   .post((req, res) => new AdminController().addUser(req, res));
 
 adminRouter
+  .route("/update-user")
+  .post((req, res) => new AdminController().updateUser(req, res));
+
+adminRouter
+  .route("/remove-user")
+  .post((req, res) => new AdminController().removeUser(req, res));
+
+adminRouter
   .route("/promote-user")
   .post((req, res) => new AdminController().promoteUser(req, res));
 

@@ -24,7 +24,7 @@ export class AccountController {
             country: req.body.organizationCountry,
             city: req.body.organizationCity,
             zipCode: req.body.organizationZipCode,
-            street: req.body.organizationStreetNumber,
+            street: req.body.organizationStreet,
             number: req.body.organizationStreetNumber,
           },
           number: req.body.organizationNumber,

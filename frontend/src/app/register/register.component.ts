@@ -22,7 +22,15 @@ export class RegisterComponent implements OnInit {
     private _snackBar: MatSnackBar
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.formGroup.get('organizationName')?.disable();
+    this.formGroup.get('organizationCountry')?.disable();
+    this.formGroup.get('organizationCity')?.disable();
+    this.formGroup.get('organizationZipCode')?.disable();
+    this.formGroup.get('organizationStreet')?.disable();
+    this.formGroup.get('organizationStreetNumber')?.disable();
+    this.formGroup.get('organizationNumber')?.disable();
+  }
 
   hidePassword = true;
   hideConfirmPassword = true;
@@ -79,24 +87,21 @@ export class RegisterComponent implements OnInit {
 
   toggleOrganization() {
     if (this.formGroup.get('organizer')?.value) {
-      document.getElementById('organization-name')!!.style.display = 'block';
-      document.getElementById('organization-country')!!.style.display = 'block';
-      document.getElementById('organization-city')!!.style.display = 'block';
-      document.getElementById('organization-zip-code')!!.style.display =
-        'block';
-      document.getElementById('organization-street')!!.style.display = 'block';
-      document.getElementById('organization-street-number')!!.style.display =
-        'block';
-      document.getElementById('organization-number')!!.style.display = 'block';
+      this.formGroup.get('organizationName')?.enable();
+      this.formGroup.get('organizationCountry')?.enable();
+      this.formGroup.get('organizationCity')?.enable();
+      this.formGroup.get('organizationZipCode')?.enable();
+      this.formGroup.get('organizationStreet')?.enable();
+      this.formGroup.get('organizationStreetNumber')?.enable();
+      this.formGroup.get('organizationNumber')?.enable();
     } else {
-      document.getElementById('organization-name')!!.style.display = 'none';
-      document.getElementById('organization-country')!!.style.display = 'none';
-      document.getElementById('organization-city')!!.style.display = 'none';
-      document.getElementById('organization-zip-code')!!.style.display = 'none';
-      document.getElementById('organization-street')!!.style.display = 'none';
-      document.getElementById('organization-street-number')!!.style.display =
-        'none';
-      document.getElementById('organization-number')!!.style.display = 'none';
+      this.formGroup.get('organizationName')?.disable();
+      this.formGroup.get('organizationCountry')?.disable();
+      this.formGroup.get('organizationCity')?.disable();
+      this.formGroup.get('organizationZipCode')?.disable();
+      this.formGroup.get('organizationStreet')?.disable();
+      this.formGroup.get('organizationStreetNumber')?.disable();
+      this.formGroup.get('organizationNumber')?.disable();
       this.formGroup.get('organizationName')?.setValue(null);
       this.formGroup.get('organizationCountry')?.setValue(null);
       this.formGroup.get('organizationCity')?.setValue(null);

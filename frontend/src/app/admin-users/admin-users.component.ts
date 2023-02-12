@@ -1,4 +1,10 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -48,6 +54,25 @@ export class AdminUsersComponent implements OnInit {
   columnsParticipantsExpand = [...this.columnsParticipants, 'expand'];
   expandedParticipant: any | null = null;
 
+  updateUser(username: string) {
+    this.adminService
+      .updateUser(this.participants.find((u) => u.username == username))
+      .subscribe((res: any) => {
+        if (res['status'] == 'ok') {
+          this._snackBar.open(`User ${username} succesfully updated`, 'Close');
+        }
+      });
+  }
+
+  removeUser(username: string) {
+    this.adminService.removeUser({ username }).subscribe((res: any) => {
+      if (res['status'] == 'ok') {
+        this._snackBar.open(`User ${username} succesfully deleted`, 'Close');
+      }
+    });
+    this.participants = this.participants.filter((u) => u.username != username);
+  }
+
   organizers: any[] = [];
 
   pendingUsers: any[] = [];
@@ -90,5 +115,63 @@ export class AdminUsersComponent implements OnInit {
           this._snackBar.open(`User ${username} rejected`, 'Close');
         }
       });
+  }
+
+  newUser = {
+    firstname: '',
+    lastname: '',
+    username: '',
+    password: '',
+    email: '',
+    phone: '',
+    image: '',
+    organizer: false,
+    organizationName: '',
+    organizationCountry: '',
+    organizationCity: '',
+    organizationZipCode: '',
+    organizationStreet: '',
+    organizationStreetNumber: '',
+    organizationNumber: '',
+  };
+
+  newUserChangeImage(event: any) {
+    if (event.target.files.length == 0) {
+      return;
+    }
+    const imageFile = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const image = new Image();
+      image.src = event.target.result as string;
+      image.src = reader.result as string;
+      this.newUser.image = reader.result as string;
+    };
+    reader.readAsDataURL(imageFile);
+  }
+
+  addNewUser() {
+    this.adminService.addUser(this.newUser).subscribe((res: any) => {
+      if (res['status'] == 'ok') {
+        this._snackBar.open('New user created', 'Close');
+        this.newUser = {
+          firstname: '',
+          lastname: '',
+          username: '',
+          password: '',
+          email: '',
+          phone: '',
+          image: '',
+          organizer: false,
+          organizationName: '',
+          organizationCountry: '',
+          organizationCity: '',
+          organizationZipCode: '',
+          organizationStreet: '',
+          organizationStreetNumber: '',
+          organizationNumber: '',
+        };
+      }
+    });
   }
 }

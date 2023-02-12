@@ -25,6 +25,14 @@ export class AdminService {
     return this.httpClient.post(`${this.uri}/add-user`, data);
   }
 
+  updateUser(data: any) {
+    return this.httpClient.post(`${this.uri}/update-user`, data);
+  }
+
+  removeUser(data: any) {
+    return this.httpClient.post(`${this.uri}/remove-user`, data);
+  }
+
   promoteUser(data: any) {
     return this.httpClient.post(`${this.uri}/promote-user`, data);
   }
