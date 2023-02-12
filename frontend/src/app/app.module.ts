@@ -39,6 +39,10 @@ import { HomeOrganizerComponent } from './home-organizer/home-organizer.componen
 import { HomeAdminComponent } from './home-admin/home-admin.component';
 import { HomeParticipantComponent } from './home-participant/home-participant.component';
 import { HomeComponent } from './home/home.component';
+import { AccountParticipantComponent } from './account-participant/account-participant.component';
+import { AccountOrganizerComponent } from './account-organizer/account-organizer.component';
+import { AccountComponent } from './account/account.component';
+import { AccountInfoComponent } from './account-info/account-info.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +62,10 @@ import { HomeComponent } from './home/home.component';
     HomeAdminComponent,
     HomeParticipantComponent,
     HomeComponent,
+    AccountParticipantComponent,
+    AccountOrganizerComponent,
+    AccountComponent,
+    AccountInfoComponent,
   ],
   imports: [
     AppRoutingModule,

@@ -23,4 +23,16 @@ userRouter
   .route("/get-applied-workshops/:username")
   .get((req, res) => new UserController().getAppliedWorkshops(req, res));
 
+userRouter
+  .route("/update-user")
+  .post((req, res) => new UserController().updateUser(req, res));
+
+userRouter
+  .route("/update-password")
+  .post((req, res) => new UserController().updatePassword(req, res));
+
+userRouter
+  .route("/update-image")
+  .post((req, res) => new UserController().updateImage(req, res));
+
 export default userRouter;

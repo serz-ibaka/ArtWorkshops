@@ -28,4 +28,16 @@ export class UserService {
   getAppliedWorkshops(username: string) {
     return this.httpClient.get(`${this.uri}/get-applied-workshops/${username}`);
   }
+
+  updateUser(data: any) {
+    return this.httpClient.post(`${this.uri}/update-user`, data);
+  }
+
+  updatePassword(data: any) {
+    return this.httpClient.post(`${this.uri}/update-password`, data);
+  }
+
+  updateImage(data: any) {
+    return this.httpClient.post(`${this.uri}/update-image`, data);
+  }
 }
