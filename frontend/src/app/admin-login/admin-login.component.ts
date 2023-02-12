@@ -29,9 +29,9 @@ export class AdminLoginComponent {
         if (res['status'] == 'error') {
           this.message = res['message'];
         } else {
-          localStorage.setItem('type', 'administrator');
+          localStorage.setItem('type', 'admin');
           localStorage.setItem('username', 'admin');
-          this.router.navigate(['/admin-home']);
+          this.router.navigate(['/']);
         }
       });
   }

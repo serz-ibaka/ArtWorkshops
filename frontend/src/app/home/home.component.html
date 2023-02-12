@@ -1,0 +1,4 @@
+<app-home-admin *ngIf="type == 'admin'"></app-home-admin>
+<app-home-participant *ngIf="type == 'participant'"></app-home-participant>
+<app-home-organizer *ngIf="type == 'organizer'"></app-home-organizer>
+<app-home-unregistered *ngIf="type == ''"></app-home-unregistered>

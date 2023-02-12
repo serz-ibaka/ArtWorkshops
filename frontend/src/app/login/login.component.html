@@ -1,14 +1,11 @@
+<app-header-unregistered></app-header-unregistered>
 <div class="login-div">
   <mat-card class="login-card">
     <mat-card-header>
       <mat-card-title>Login</mat-card-title>
-      <mat-card-subtitle
-        >Don't have an account? Register
-        <a [routerLink]="['/register']">here</a></mat-card-subtitle
-      >
-      <mat-card-subtitle
-        >Login to your participant or organizer account</mat-card-subtitle
-      >
+      <mat-card-subtitle>Don't have an account? Register
+        <a [routerLink]="['/register']">here</a></mat-card-subtitle>
+      <mat-card-subtitle>Login to your participant or organizer account</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
@@ -20,31 +17,16 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Password: </mat-label>
-          <input
-            matInput
-            formControlName="password"
-            [type]="hidePassword ? 'password' : 'text'"
-            required
-          />
-          <button
-            mat-icon-button
-            matSuffix
-            (click)="hidePassword = !hidePassword"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hidePassword"
-          >
+          <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" required />
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword">
             <mat-icon>{{
               hidePassword ? "visibility_off" : "visibility"
-            }}</mat-icon>
+              }}</mat-icon>
           </button>
         </mat-form-field>
 
-        <button
-          mat-raised-button
-          color="primary"
-          [disabled]="formGroup.invalid"
-          (click)="login()"
-        >
+        <button mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="login()">
           Login
         </button>
 
