@@ -40,4 +40,8 @@ export class UserService {
   updateImage(data: any) {
     return this.httpClient.post(`${this.uri}/update-image`, data);
   }
+
+  checkToken(params: any) {
+    return this.httpClient.get(`${this.uri}/check-token`, { params });
+  }
 }

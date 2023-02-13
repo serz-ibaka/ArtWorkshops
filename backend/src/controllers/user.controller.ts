@@ -1,8 +1,18 @@
 import express from "express";
 import Image from "../models/image";
 import User from "../models/user";
+import * as nodemailer from "nodemailer";
+import Token from "../models/token";
 
 export class UserController {
+  transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "sergejprosic8@gmail.com",
+      pass: "sbopgirjkyklytmi",
+    },
+  });
+
   getUsernames = (req: express.Request, res: express.Response) => {
     User.find({}, { username: 1 }, (_, usernames) => {
       res.status(200).json({ usernames: usernames });
@@ -50,5 +60,25 @@ export class UserController {
     await User.updateOne({ username: req.body.username }, { imagePath });
     await new Image({ content: req.body.image, path: imagePath }).save();
     res.json({ status: "ok" });
+  };
+
+  forgotPassword = (req: express.Request, res: express.Response) => {
+    const token = `${req.body.username}_${Date.now()}`;
+    new Token({});
+    const message = {
+      from: "sergejprosic8@gmail.com",
+      to: req.body.email,
+      subject: "Recover your password",
+      text: "To recover your email, access the link below. Link will be active next ",
+      html: `<a href="localhost:4200/set-new-password/${token}">`,
+    };
+
+    this.transporter.sendMail(message, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
   };
 }

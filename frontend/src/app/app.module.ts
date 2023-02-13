@@ -43,6 +43,8 @@ import { AccountParticipantComponent } from './account-participant/account-parti
 import { AccountOrganizerComponent } from './account-organizer/account-organizer.component';
 import { AccountComponent } from './account/account.component';
 import { AccountInfoComponent } from './account-info/account-info.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { SetNewPasswordComponent } from './set-new-password/set-new-password.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { AccountInfoComponent } from './account-info/account-info.component';
     AccountOrganizerComponent,
     AccountComponent,
     AccountInfoComponent,
+    ForgotPasswordComponent,
+    SetNewPasswordComponent,
   ],
   imports: [
     AppRoutingModule,
