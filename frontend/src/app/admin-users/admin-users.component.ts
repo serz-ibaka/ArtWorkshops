@@ -54,7 +54,7 @@ export class AdminUsersComponent implements OnInit {
   columnsParticipantsExpand = [...this.columnsParticipants, 'expand'];
   expandedParticipant: any | null = null;
 
-  updateUser(username: string) {
+  updateParticipant(username: string) {
     this.adminService
       .updateUser(this.participants.find((u) => u.username == username))
       .subscribe((res: any) => {
@@ -64,7 +64,7 @@ export class AdminUsersComponent implements OnInit {
       });
   }
 
-  removeUser(username: string) {
+  removeParticipant(username: string) {
     this.adminService.removeUser({ username }).subscribe((res: any) => {
       if (res['status'] == 'ok') {
         this._snackBar.open(`User ${username} succesfully deleted`, 'Close');
@@ -73,7 +73,29 @@ export class AdminUsersComponent implements OnInit {
     this.participants = this.participants.filter((u) => u.username != username);
   }
 
+  updateOrganizer(username: string) {
+    this.adminService
+      .updateUser(this.organizers.find((u) => u.username == username))
+      .subscribe((res: any) => {
+        if (res['status'] == 'ok') {
+          this._snackBar.open(`User ${username} succesfully updated`, 'Close');
+        }
+      });
+  }
+
+  removeOrganizer(username: string) {
+    this.adminService.removeUser({ username }).subscribe((res: any) => {
+      if (res['status'] == 'ok') {
+        this._snackBar.open(`User ${username} succesfully deleted`, 'Close');
+      }
+    });
+    this.organizers = this.organizers.filter((u) => u.username != username);
+  }
+
   organizers: any[] = [];
+  columnsOrganizers = ['username', 'firstname', 'lastname', 'phone', 'email'];
+  columnsOrganizersExpand = [...this.columnsParticipants, 'expand'];
+  expandedOrganizer: any | null = null;
 
   pendingUsers: any[] = [];
   displayedColumnsPending = [

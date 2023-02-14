@@ -1,122 +1,186 @@
-<mat-card *ngIf="user != null">
-    <div style="display: flex; flex-direction: row; align-items: flex-start; margin: 10px;">
-        <div style="display: flex; flex-direction: column; align-items: flex-start; margin: 10px;">
-            <mat-card-title>
-                Hello {{user.firstname}} {{user.lastname}}
-            </mat-card-title>
-            <img mat-card-image src="{{image}}">
+<div class="flex-center">
+  <mat-card>
+    <div *ngIf="user != null">
+      <div class="flex-center">
+        <div class="flex-row">
+          <div class="flex-column">
+            <h6>Hello {{ user.firstname }} {{ user.lastname }}</h6>
+            <img src="{{ image }}" />
+          </div>
+
+          <div class="flex-column">
+            <h6>Personal details</h6>
+
+            <mat-form-field>
+              <mat-label>Firstname</mat-label>
+              <input matInput [(ngModel)]="user.firstname" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Lastname</mat-label>
+              <input matInput [(ngModel)]="user.lastname" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Email</mat-label>
+              <input matInput [(ngModel)]="user.email" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Phone</mat-label>
+              <input matInput [(ngModel)]="user.phone" />
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" (click)="changeInfo()">
+              Change info
+            </button>
+            <span style="color: red">{{ infoMessage }}</span>
+          </div>
+
+          <div
+            class="flex-column"
+            *ngIf="type == 'organizer'"
+          >
+            <h6>Organization</h6>
+
+            <mat-form-field>
+              <mat-label>Name</mat-label>
+              <input matInput [(ngModel)]="user.organization.name" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Country</mat-label>
+              <input matInput [(ngModel)]="user.organization.address.country" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>City</mat-label>
+              <input matInput [(ngModel)]="user.organization.address.city" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Zip code</mat-label>
+              <input matInput [(ngModel)]="user.organization.address.zipCode" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Street</mat-label>
+              <input matInput [(ngModel)]="user.organization.address.street" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Street number</mat-label>
+              <input matInput [(ngModel)]="user.organization.address.number" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Number</mat-label>
+              <input matInput [(ngModel)]="user.organization.number" />
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" (click)="changeInfo()">
+              Change organization info
+            </button>
+          </div>
+
+          <div class="flex-column">
+            <h6>Change password</h6>
+
+            <mat-form-field>
+              <mat-label>Old password</mat-label>
+              <input
+                matInput
+                [type]="hideOldPassword ? 'password' : 'text'"
+                [(ngModel)]="oldPassword"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hideOldPassword = !hideOldPassword"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hideOldPassword"
+              >
+                <mat-icon>{{
+                  hideOldPassword ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>New password</mat-label>
+              <input
+                matInput
+                [type]="hideNewPassword ? 'password' : 'text'"
+                [(ngModel)]="newPassword"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                matTooltip="Password should have 8-16 characters, at least one uppercase letter, lowercase letter, digit and special character"
+                [matTooltipPosition]="'after'"
+                aria-label="Button that displays a tooltip in various positions"
+              >
+                <mat-icon>information</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hideNewPassword = !hideNewPassword"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hideNewPassword"
+              >
+                <mat-icon>{{
+                  hideNewPassword ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Confirm password</mat-label>
+              <input
+                matInput
+                [type]="hideConfirmPassword ? 'password' : 'text'"
+                [(ngModel)]="confirmPassword"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hideConfirmPassword = !hideConfirmPassword"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hideConfirmPassword"
+              >
+                <mat-icon>{{
+                  hideConfirmPassword ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="changePassword()"
+            >
+              Change password
+            </button>
+            <span style="color: red">{{ passwordMessage }}</span>
+          </div>
+
+          <div class="flex-column">
+            <h6>Change image</h6>
+            <input
+              type="file"
+              (change)="onFileSelected($event)"
+              style="margin: 10px 0"
+              id="new-image"
+            />
+
+            <button mat-raised-button color="primary" (click)="changeImage()">
+              Change image
+            </button>
+            <span style="color: red">{{ imageMessage }}</span>
+          </div>
         </div>
-        <div style="display: flex; flex-direction: column; align-items: flex-start; margin: 10px;">
-            <mat-card-title>Personal details</mat-card-title>
-
-            <mat-form-field>
-                <mat-label>Firstname</mat-label>
-                <input matInput [(ngModel)]="user.firstname">
-            </mat-form-field>
-
-            <mat-form-field>
-                <mat-label>Lastname</mat-label>
-                <input matInput [(ngModel)]="user.lastname">
-            </mat-form-field>
-
-            <mat-form-field>
-                <mat-label>Email</mat-label>
-                <input matInput [(ngModel)]="user.email">
-            </mat-form-field>
-
-            <mat-form-field>
-                <mat-label>Phone</mat-label>
-                <input matInput [(ngModel)]="user.phone">
-            </mat-form-field>
-
-            <button mat-raised-button color="primary" (click)="changeInfo()">Change info</button>
-            <span style="color: red;">{{infoMessage}}</span>
-        </div>
-
-        <div style="display: flex; flex-direction: column; align-items: flex-start; margin: 10px;"
-            *ngIf="type == 'organizer'">
-
-            <mat-card-title>Organization</mat-card-title>
-
-            <mat-form-field>
-                <mat-label>Name</mat-label>
-                <input matInput [(ngModel)]="user.organization.name">
-            </mat-form-field>
-
-            <mat-form-field>
-                <mat-label>Country</mat-label>
-                <input matInput [(ngModel)]="user.organization.address.country">
-            </mat-form-field>
-
-            <mat-form-field>
-                <mat-label>City</mat-label>
-                <input matInput [(ngModel)]="user.organization.address.city">
-            </mat-form-field>
-
-            <mat-form-field>
-                <mat-label>Zip code</mat-label>
-                <input matInput [(ngModel)]="user.organization.address.zipCode">
-            </mat-form-field>
-
-            <mat-form-field>
-                <mat-label>Street</mat-label>
-                <input matInput [(ngModel)]="user.organization.address.street">
-            </mat-form-field>
-
-            <mat-form-field>
-                <mat-label>Street number</mat-label>
-                <input matInput [(ngModel)]="user.organization.address.number">
-            </mat-form-field>
-
-            <mat-form-field>
-                <mat-label>Number</mat-label>
-                <input matInput [(ngModel)]="user.organization.number">
-            </mat-form-field>
-
-            <button mat-raised-button color="primary" (click)="changeInfo()">Change organization info</button>
-        </div>
-
-        <div style="display: flex; flex-direction: column; align-items: flex-start; margin: 10px;">
-            <mat-card-title>Change password</mat-card-title>
-            <mat-form-field>
-                <mat-label>Old password</mat-label>
-                <input matInput [type]="hideOldPassword ? 'password' : 'text'" [(ngModel)]="oldPassword">
-                <button mat-icon-button matSuffix (click)="hideOldPassword = !hideOldPassword"
-                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideOldPassword">
-                    <mat-icon>{{ hideOldPassword ? "visibility_off" : "visibility" }}</mat-icon>
-                </button>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>New password</mat-label>
-                <input matInput [type]="hideNewPassword ? 'password' : 'text'" [(ngModel)]="newPassword">
-                <button mat-icon-button matSuffix
-                    matTooltip="Password should have 8-16 characters, at least one uppercase letter, lowercase letter, digit and special character"
-                    [matTooltipPosition]="'after'" aria-label="Button that displays a tooltip in various positions">
-                    <mat-icon>information</mat-icon>
-                </button>
-                <button mat-icon-button matSuffix (click)="hideNewPassword = !hideNewPassword"
-                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideNewPassword">
-                    <mat-icon>{{ hideNewPassword ? "visibility_off" : "visibility" }}</mat-icon>
-                </button>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Confirm password</mat-label>
-                <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" [(ngModel)]="confirmPassword">
-                <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword"
-                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
-                    <mat-icon>{{ hideConfirmPassword ? "visibility_off" : "visibility" }}</mat-icon>
-                </button>
-            </mat-form-field>
-            <button mat-raised-button color="primary" (click)="changePassword()">Change password</button>
-            <span style="color: red;">{{passwordMessage}}</span>
-        </div>
-
-        <div style="display: flex; flex-direction: column; align-items: flex-start; margin: 10px;">
-            <mat-card-title>Change image</mat-card-title>
-            <input type="file" (change)="onFileSelected($event)" style="margin: 10px 0;" id="new-image">
-
-            <button mat-raised-button color="primary" (click)="changeImage()">Change image</button>
-            <span style="color: red;">{{imageMessage}}</span>
-        </div>
+      </div>
     </div>
-</mat-card>
+  </mat-card>
+</div>

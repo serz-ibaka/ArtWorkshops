@@ -23,7 +23,7 @@
                 <td mat-cell *matCellDef="let participant" [attr.colspan]="columnsParticipantsExpand.length">
                     <div class="example-element-detail"
                         [@detailExpand]="participant == expandedParticipant ? 'expanded' : 'collapsed'">
-                        <div fxLayout="row" style="display: flex; flex-direction: row">
+                        <div class="flex-row">
                             <mat-form-field style="margin: 10px;">
                                 <mat-label>Username</mat-label>
                                 <input matInput [(ngModel)]="participant.username" disabled>
@@ -46,9 +46,9 @@
                             </mat-form-field>
 
                             <button mat-raised-button color="primary" style="margin: 10px 0;"
-                                (click)="updateUser(participant.username)">Update</button>
+                                (click)="updateParticipant(participant.username)">Update</button>
                             <button mat-raised-button color="warn" style="margin: 10px 0;"
-                                (click)="removeUser(participant.username)">Remove</button>
+                                (click)="removeParticipant(participant.username)">Remove</button>
 
                         </div>
                     </div>
@@ -65,7 +65,99 @@
     </mat-tab>
 
     <mat-tab label="Organizers">
+        <table mat-table [dataSource]="organizers" multiTemplateDataRows class="mat-elevation-z8">
 
+            <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsParticipants">
+                <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
+                <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="expand">
+                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                <td mat-cell *matCellDef="let organizer">
+                    <button mat-icon-button aria-label="expand row"
+                        (click)="(expandedParticipant = expandedParticipant === organizer ? null : organizer); $event.stopPropagation()">
+                        <mat-icon *ngIf="expandedParticipant !== organizer">keyboard_arrow_down</mat-icon>
+                        <mat-icon *ngIf="expandedParticipant === organizer">keyboard_arrow_up</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let organizer" [attr.colspan]="columnsParticipantsExpand.length">
+                    <div class="example-element-detail"
+                        [@detailExpand]="organizer == expandedParticipant ? 'expanded' : 'collapsed'">
+                        <div class="flex-column">
+                            <div class="flex-row">
+                                <mat-form-field style="margin: 10px;">
+                                    <mat-label>Username</mat-label>
+                                    <input matInput [(ngModel)]="organizer.username" disabled>
+                                </mat-form-field>
+                                <mat-form-field style="margin: 10px;">
+                                    <mat-label>Firstname</mat-label>
+                                    <input matInput [(ngModel)]="organizer.firstname">
+                                </mat-form-field>
+                                <mat-form-field style="margin: 10px;">
+                                    <mat-label>Lastname</mat-label>
+                                    <input matInput [(ngModel)]="organizer.lastname">
+                                </mat-form-field>
+                                <mat-form-field style="margin: 10px;">
+                                    <mat-label>Email</mat-label>
+                                    <input matInput [(ngModel)]="organizer.email">
+                                </mat-form-field>
+                                <mat-form-field style="margin: 10px;">
+                                    <mat-label>Phone</mat-label>
+                                    <input matInput [(ngModel)]="organizer.phone">
+                                </mat-form-field>
+    
+                                <button mat-raised-button color="primary" style="margin: 10px 0;"
+                                    (click)="updateOrganizer(organizer.username)">Update</button>
+                                <button mat-raised-button color="warn" style="margin: 10px 0;"
+                                    (click)="removeOrganizer(organizer.username)">Remove</button>
+    
+                            </div>
+                            <div class="flex-row">
+                                <mat-form-field style="margin: 10px;">
+                                    <mat-label>Organization name</mat-label>
+                                    <input matInput [(ngModel)]="organizer.organization.name">
+                                </mat-form-field>
+                                <mat-form-field style="margin: 10px;">
+                                    <mat-label>Organization country</mat-label>
+                                    <input matInput [(ngModel)]="organizer.organization.address.country">
+                                </mat-form-field>
+                                <mat-form-field style="margin: 10px;">
+                                    <mat-label>Organization city</mat-label>
+                                    <input matInput [(ngModel)]="organizer.organization.address.city">
+                                </mat-form-field>
+                                <mat-form-field style="margin: 10px;">
+                                    <mat-label>Organization zip code</mat-label>
+                                    <input matInput [(ngModel)]="organizer.organization.address.zipCode">
+                                </mat-form-field>
+                                <mat-form-field style="margin: 10px;">
+                                    <mat-label>Organization street</mat-label>
+                                    <input matInput [(ngModel)]="organizer.organization.address.street">
+                                </mat-form-field>
+                                <mat-form-field style="margin: 10px;">
+                                    <mat-label>Organization street number</mat-label>
+                                    <input matInput [(ngModel)]="organizer.organization.address.number">
+                                </mat-form-field>
+                                <mat-form-field style="margin: 10px;">
+                                    <mat-label>Organization number</mat-label>
+                                    <input matInput [(ngModel)]="organizer.organization.number">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsParticipantsExpand"></tr>
+            <tr mat-row *matRowDef="let organizer; columns: columnsParticipantsExpand;" class="example-element-row"
+                [class.example-expanded-row]="expandedParticipant === organizer"
+                (click)="expandedParticipant = expandedParticipant === organizer ? null : organizer">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
     </mat-tab>
 
     <mat-tab label="Pending requests">
@@ -118,20 +210,23 @@
     </mat-tab>
 
     <mat-tab label="Add new user">
-        <div fxLayout="row" style="display: flex; flex-direction: row; justify-content: center;">
-            <div fxLayout="column" style="display: flex; flex-direction: column; margin: 20px;">
-                <mat-form-field>
-                    <mat-label>Firstname</mat-label>
-                    <input matInput placeholder="Enter first name" [(ngModel)]="newUser.firstname">
-                </mat-form-field>
+        <div class="flex-center">
+            <mat-card>
 
-                <mat-form-field>
-                    <mat-label>Lastname</mat-label>
-                    <input matInput placeholder="Enter last name" [(ngModel)]="newUser.lastname">
-                </mat-form-field>
+                <div class="flex-row">
+                    <div class="flex-column">
+                        <mat-form-field>
+                            <mat-label>Firstname</mat-label>
+                            <input matInput placeholder="Enter first name" [(ngModel)]="newUser.firstname">
+                        </mat-form-field>
 
-                <mat-form-field>
-                    <mat-label>Username</mat-label>
+                        <mat-form-field>
+                            <mat-label>Lastname</mat-label>
+                            <input matInput placeholder="Enter last name" [(ngModel)]="newUser.lastname">
+                        </mat-form-field>
+                        
+                        <mat-form-field>
+                            <mat-label>Username</mat-label>
                     <input matInput placeholder="Enter username" [(ngModel)]="newUser.username">
                 </mat-form-field>
 
@@ -139,12 +234,12 @@
                     <mat-label>Password</mat-label>
                     <input matInput type="password" placeholder="Enter password" [(ngModel)]="newUser.password">
                 </mat-form-field>
-
+                
                 <mat-form-field>
                     <mat-label>Email</mat-label>
                     <input matInput type="email" placeholder="Enter email" [(ngModel)]="newUser.email">
                 </mat-form-field>
-
+                
                 <mat-form-field>
                     <mat-label>Phone number</mat-label>
                     <input matInput placeholder="Enter phone number" [(ngModel)]="newUser.phone">
@@ -153,9 +248,9 @@
                 <input type="file" accept="image/jpeg, image/png" (change)="newUserChangeImage($event)" />
                 <button mat-raised-button color="primary" style="margin: 10px 0;" (click)="addNewUser()">Add
                     user</button>
-            </div>
+                </div>
 
-            <div fxLayout="column" style="display: flex; flex-direction: column; margin: 20px;">
+                <div class="flex-column">
                 <mat-checkbox>Organizer</mat-checkbox>
                 <mat-form-field>
                     <mat-label>Organization name</mat-label>
@@ -180,7 +275,7 @@
                 <mat-form-field>
                     <mat-label>Organization street number</mat-label>
                     <input matInput placeholder="Enter organization street number"
-                        [(ngModel)]="newUser.organizationStreetNumber">
+                    [(ngModel)]="newUser.organizationStreetNumber">
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Organization number</mat-label>
@@ -188,5 +283,7 @@
                 </mat-form-field>
             </div>
         </div>
+    </mat-card>
+    </div>
     </mat-tab>
 </mat-tab-group>

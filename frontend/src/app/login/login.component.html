@@ -1,38 +1,64 @@
 <app-header-unregistered></app-header-unregistered>
-<div class="login-div">
-  <mat-card class="login-card">
-    <mat-card-header>
-      <mat-card-title>Login</mat-card-title>
-      <mat-card-subtitle>Don't have an account? Register
-        <a [routerLink]="['/register']">here</a></mat-card-subtitle>
-        <mat-card-subtitle><a [routerLink]="['/forgot-password']">Forgot password</a>?</mat-card-subtitle>
-      <mat-card-subtitle>Login to your participant or organizer account</mat-card-subtitle>
-    </mat-card-header>
+<div class="flex-center">
+  <mat-card>
+    <div class="flex-center">
+      <div class="flex-column">
+        <div class="flex-row">
+          <div class="flex-column">
+            <h3>Login</h3>
+            <h6 style="color: gray">
+              Don't have an account? Register
+              <a [routerLink]="['/register']">here</a>
+            </h6>
+            <h6 style="color: gray">
+              <a [routerLink]="['/forgot-password']">Forgot password</a>?
+            </h6>
+          </div>
+        </div>
 
-    <mat-card-content>
-      <form class="login-form" [formGroup]="formGroup">
-        <mat-form-field appearance="fill">
-          <mat-label>Username: </mat-label>
-          <input matInput formControlName="username" />
-        </mat-form-field>
+        <form class="login-form" [formGroup]="formGroup">
+          <div class="flex-row">
+            <div class="flex-column">
+              <mat-form-field appearance="fill">
+                <mat-label>Username: </mat-label>
+                <input matInput formControlName="username" />
+              </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Password: </mat-label>
-          <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" required />
-          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hidePassword">
-            <mat-icon>{{
-              hidePassword ? "visibility_off" : "visibility"
-              }}</mat-icon>
-          </button>
-        </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>Password: </mat-label>
+                <input
+                  matInput
+                  formControlName="password"
+                  [type]="hidePassword ? 'password' : 'text'"
+                  required
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hidePassword = !hidePassword"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hidePassword"
+                >
+                  <mat-icon>{{
+                    hidePassword ? "visibility_off" : "visibility"
+                  }}</mat-icon>
+                </button>
+              </mat-form-field>
 
-        <button mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="login()">
-          Login
-        </button>
+              <button
+                mat-raised-button
+                color="primary"
+                [disabled]="formGroup.invalid"
+                (click)="login()"
+              >
+                Login
+              </button>
 
-        <span style="color: red">{{ message }}</span>
-      </form>
-    </mat-card-content>
+              <span style="color: red">{{ message }}</span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </mat-card>
 </div>
