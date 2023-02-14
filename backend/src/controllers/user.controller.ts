@@ -76,6 +76,11 @@ export class UserController {
 
   forgotPassword = async (req: express.Request, res: express.Response) => {
     const user = await User.findOne({ email: req.body.email });
+    if (user == null) {
+      res.json({ status: "error", message: "Email address is invalid" });
+      return;
+    }
+
     const timestamp = Date.now();
     const token = `${user.username}_${timestamp}`;
     await new Token({
@@ -99,5 +104,13 @@ export class UserController {
         res.json({ status: "ok" });
       }
     });
+  };
+
+  setNewPassword = async (req: express.Request, res: express.Response) => {
+    await User.updateOne(
+      { username: req.body.username },
+      { password: req.body.password }
+    );
+    res.json({ status: "ok" });
   };
 }

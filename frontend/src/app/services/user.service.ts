@@ -48,4 +48,8 @@ export class UserService {
   forgotPassword(data: any) {
     return this.httpClient.post(`${this.uri}/forgot-password`, data);
   }
+
+  setNewPassword(data: any) {
+    return this.httpClient.post(`${this.uri}/set-new-password`, data);
+  }
 }

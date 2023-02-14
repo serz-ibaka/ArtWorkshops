@@ -43,4 +43,8 @@ userRouter
   .route("/forgot-password")
   .post((req, res) => new UserController().forgotPassword(req, res));
 
+userRouter
+  .route("/set-new-password")
+  .post((req, res) => new UserController().setNewPassword(req, res));
+
 export default userRouter;
