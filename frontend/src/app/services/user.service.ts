@@ -44,4 +44,8 @@ export class UserService {
   checkToken(params: any) {
     return this.httpClient.get(`${this.uri}/check-token`, { params });
   }
+
+  forgotPassword(data: any) {
+    return this.httpClient.post(`${this.uri}/forgot-password`, data);
+  }
 }

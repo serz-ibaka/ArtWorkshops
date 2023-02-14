@@ -62,15 +62,33 @@ export class UserController {
     res.json({ status: "ok" });
   };
 
-  forgotPassword = (req: express.Request, res: express.Response) => {
-    const token = `${req.body.username}_${Date.now()}`;
-    new Token({});
+  checkToken = async (req: express.Request, res: express.Response) => {
+    const token = await Token.findOne({
+      token: req.query.token,
+      datetime: { $gte: new Date(Date.now() - 30 * 60 * 1000) },
+    });
+    if (token == null) {
+      res.json({ status: "error", message: "Token has expired" });
+    } else {
+      res.json({ status: "ok", username: token.username });
+    }
+  };
+
+  forgotPassword = async (req: express.Request, res: express.Response) => {
+    const user = await User.findOne({ email: req.body.email });
+    const timestamp = Date.now();
+    const token = `${user.username}_${timestamp}`;
+    await new Token({
+      token: token,
+      username: user.username,
+      datetime: timestamp,
+    }).save();
     const message = {
       from: "sergejprosic8@gmail.com",
       to: req.body.email,
       subject: "Recover your password",
       text: "To recover your email, access the link below. Link will be active next ",
-      html: `<a href="localhost:4200/set-new-password/${token}">`,
+      html: `<p>To set new password use <a href="http://localhost:4200/set-new-password/${token}">this link</a></p>`,
     };
 
     this.transporter.sendMail(message, (error, info) => {
@@ -78,6 +96,7 @@ export class UserController {
         console.log(error);
       } else {
         console.log("Email sent: " + info.response);
+        res.json({ status: "ok" });
       }
     });
   };

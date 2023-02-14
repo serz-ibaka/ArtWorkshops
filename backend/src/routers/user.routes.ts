@@ -35,4 +35,12 @@ userRouter
   .route("/update-image")
   .post((req, res) => new UserController().updateImage(req, res));
 
+userRouter
+  .route("/check-token")
+  .get((req, res) => new UserController().checkToken(req, res));
+
+userRouter
+  .route("/forgot-password")
+  .post((req, res) => new UserController().forgotPassword(req, res));
+
 export default userRouter;
