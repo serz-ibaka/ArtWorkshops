@@ -40,11 +40,23 @@ adminRouter
   .post((req, res) => new AdminController().rejectWorkshop(req, res));
 
 adminRouter
-  .route("/edit-workshop")
-  .post((req, res) => new AdminController().editWorkshop(req, res));
+  .route("/update-workshop")
+  .post((req, res) => new AdminController().updateWorkshop(req, res));
+
+adminRouter
+  .route("/remove-workshop")
+  .post((req, res) => new AdminController().removeWorkshop(req, res));
+
+adminRouter
+  .route("/add-workshop")
+  .post((req, res) => new AdminController().addWorkshop(req, res));
 
 adminRouter
   .route("/get-all-users")
   .get((req, res) => new AdminController().getAllUsers(req, res));
+
+adminRouter
+  .route("/get-all-workshops")
+  .get((req, res) => new AdminController().getAllWorkshops(req, res));
 
 export default adminRouter;

@@ -37,8 +37,8 @@ export class WorkshopController {
         latitude: req.body.location.latitude,
         longitude: req.body.location.longitude,
       },
-      shortDescription: req.body.shortDescription,
-      longDescription: req.body.longDescription,
+      short_description: req.body.shortDescription,
+      long_description: req.body.longDescription,
       capacity: {
         free: req.body.capacity,
         reserved: 0,

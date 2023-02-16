@@ -129,7 +129,7 @@ export class AdminUsersComponent implements OnInit {
 
   rejectUser(username: string) {
     const user = this.pendingUsers.find((u) => u.username == username);
-    user.status = 'active';
+    user.status = 'rejected';
     this.pendingUsers = this.pendingUsers.filter((u) => u.username != username);
     this.adminService
       .rejectUser({ username: username })

@@ -1,8 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import * as L from 'leaflet';
 
@@ -13,7 +9,7 @@ declare var Maptiler: any;
   templateUrl: './location-input.component.html',
   styleUrls: ['./location-input.component.css'],
 })
-export class LocationInputComponent {
+export class LocationInputComponent implements OnInit {
   @Output() locationSelected = new EventEmitter<[number, number]>();
 
   private map: L.Map | null = null;
@@ -29,7 +25,7 @@ export class LocationInputComponent {
       {
         attribution:
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-          crossOrigin: true
+        crossOrigin: true,
       }
     ).addTo(this.map);
 

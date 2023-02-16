@@ -45,11 +45,23 @@ export class AdminService {
     return this.httpClient.post(`${this.uri}/reject-workshop`, data);
   }
 
-  editWorkshop(data: any) {
-    return this.httpClient.post(`${this.uri}/edit-workshop`, data);
+  updateWorkshop(data: any) {
+    return this.httpClient.post(`${this.uri}/update-workshop`, data);
+  }
+
+  removeWorkshop(data: any) {
+    return this.httpClient.post(`${this.uri}/remove-workshop`, data);
+  }
+
+  addWorkshop(data: any) {
+    return this.httpClient.post(`${this.uri}/add-workshop`, data);
   }
 
   getAllUsers() {
     return this.httpClient.get(`${this.uri}/get-all-users`);
+  }
+
+  getAllWorkshops() {
+    return this.httpClient.get(`${this.uri}/get-all-workshops`);
   }
 }
