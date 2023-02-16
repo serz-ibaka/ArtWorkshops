@@ -23,6 +23,17 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {
+  MatMomentDateModule,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatTimepickerModule,
+  NgxMatNativeDateModule,
+} from '@angular-material-components/datetime-picker';
 
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
@@ -45,6 +56,9 @@ import { AccountComponent } from './account/account.component';
 import { AccountInfoComponent } from './account-info/account-info.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { SetNewPasswordComponent } from './set-new-password/set-new-password.component';
+import { AddNewWorkshopComponent } from './add-new-workshop/add-new-workshop.component';
+import { LocationInputComponent } from './location-input/location-input.component';
+import { AdminWorkshopsComponent } from './admin-workshops/admin-workshops.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +84,9 @@ import { SetNewPasswordComponent } from './set-new-password/set-new-password.com
     AccountInfoComponent,
     ForgotPasswordComponent,
     SetNewPasswordComponent,
+    AddNewWorkshopComponent,
+    LocationInputComponent,
+    AdminWorkshopsComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -88,12 +105,20 @@ import { SetNewPasswordComponent } from './set-new-password/set-new-password.com
     MatSnackBarModule,
     MatTooltipModule,
     MatTabsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatTableModule,
     MatCardModule,
     MatToolbarModule,
     MatMenuModule,
+    MatMomentDateModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

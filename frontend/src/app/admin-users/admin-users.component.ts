@@ -7,6 +7,7 @@ import {
 } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { AdminService } from '../services/admin.service';
 
@@ -38,10 +39,10 @@ export class AdminUsersComponent implements OnInit {
       if (res['status'] == 'ok') {
         allUsers = res['users'];
         console.log(allUsers);
-        this.participants = allUsers.filter(
+        this.participants.data = allUsers.filter(
           (u) => u.status == 'active' && u.type == 'participant'
         );
-        this.organizers = allUsers.filter(
+        this.organizers.data = allUsers.filter(
           (u) => u.status == 'active' && u.type == 'organizer'
         );
         this.pendingUsers = allUsers.filter((u) => u.status == 'pending');
@@ -49,14 +50,14 @@ export class AdminUsersComponent implements OnInit {
     });
   }
 
-  participants: any[] = [];
+  participants = new MatTableDataSource<any>([]);
   columnsParticipants = ['username', 'firstname', 'lastname', 'phone', 'email'];
   columnsParticipantsExpand = [...this.columnsParticipants, 'expand'];
   expandedParticipant: any | null = null;
 
   updateParticipant(username: string) {
     this.adminService
-      .updateUser(this.participants.find((u) => u.username == username))
+      .updateUser(this.participants.data.find((u) => u.username == username))
       .subscribe((res: any) => {
         if (res['status'] == 'ok') {
           this._snackBar.open(`User ${username} succesfully updated`, 'Close');
@@ -70,12 +71,12 @@ export class AdminUsersComponent implements OnInit {
         this._snackBar.open(`User ${username} succesfully deleted`, 'Close');
       }
     });
-    this.participants = this.participants.filter((u) => u.username != username);
+    this.participants.data = this.participants.data.filter((u) => u.username != username);
   }
 
   updateOrganizer(username: string) {
     this.adminService
-      .updateUser(this.organizers.find((u) => u.username == username))
+      .updateUser(this.organizers.data.find((u) => u.username == username))
       .subscribe((res: any) => {
         if (res['status'] == 'ok') {
           this._snackBar.open(`User ${username} succesfully updated`, 'Close');
@@ -89,10 +90,10 @@ export class AdminUsersComponent implements OnInit {
         this._snackBar.open(`User ${username} succesfully deleted`, 'Close');
       }
     });
-    this.organizers = this.organizers.filter((u) => u.username != username);
+    this.organizers.data = this.organizers.data.filter((u) => u.username != username);
   }
 
-  organizers: any[] = [];
+  organizers = new MatTableDataSource<any>([]);
   columnsOrganizers = ['username', 'firstname', 'lastname', 'phone', 'email'];
   columnsOrganizersExpand = [...this.columnsParticipants, 'expand'];
   expandedOrganizer: any | null = null;
@@ -113,9 +114,9 @@ export class AdminUsersComponent implements OnInit {
     user.status = 'active';
     this.pendingUsers = this.pendingUsers.filter((u) => u.username != username);
     if (user.type == 'participant') {
-      this.participants.push(user);
+      this.participants.data = [...this.participants.data, user];
     } else {
-      this.organizers.push(user);
+      this.organizers.data = [...this.organizers.data, user];
     }
     this.adminService
       .acceptUser({ username: username })

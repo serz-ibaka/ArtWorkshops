@@ -9,6 +9,10 @@ export class WorkshopService {
 
   private uri: string = 'http://127.0.0.1:4000/workshop';
 
+  addNewWorkshop(data: any) {
+    return this.httpClient.post(`${this.uri}/add-new-workshop`, data);
+  }
+
   getCurrentWorkshops() {
     return this.httpClient.get(`${this.uri}/get-current-workshops`);
   }

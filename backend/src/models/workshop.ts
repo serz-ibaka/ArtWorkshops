@@ -17,6 +17,7 @@ var Workshop = new mongoose.Schema({
   status: { type: String },
   image_path: { type: String },
   gallery_path: [{ image_path: { type: String } }],
+  organizer: { type: String },
   subscribed: [
     {
       email: {
@@ -38,11 +39,6 @@ var Workshop = new mongoose.Schema({
       datetime: { type: Date },
     },
   ],
-  organizer: {
-    username: { type: String },
-    firstname: { type: String },
-    lastname: { type: String },
-  },
   applications: [
     {
       username: { type: String },

@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AccountComponent } from './account/account.component';
+import { AddNewWorkshopComponent } from './add-new-workshop/add-new-workshop.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { AdminWorkshopsComponent } from './admin-workshops/admin-workshops.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
@@ -20,8 +22,11 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'set-new-password/:token', component: SetNewPasswordComponent },
 
+  { path: 'add-new-workshop', component: AddNewWorkshopComponent },
+
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'admin-users', component: AdminUsersComponent },
+  { path: 'admin-workshops', component: AdminWorkshopsComponent },
 ];
 
 @NgModule({

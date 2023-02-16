@@ -1,7 +1,7 @@
 <app-header-admin></app-header-admin>
 <mat-tab-group>
     <mat-tab label="Participants">
-        <table mat-table [dataSource]="participants" multiTemplateDataRows class="mat-elevation-z8">
+        <table mat-table id="table-participants" [dataSource]="participants" multiTemplateDataRows class="mat-elevation-z8">
 
             <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsParticipants">
                 <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
@@ -65,7 +65,7 @@
     </mat-tab>
 
     <mat-tab label="Organizers">
-        <table mat-table [dataSource]="organizers" multiTemplateDataRows class="mat-elevation-z8">
+        <table mat-table id="table-organizers" [dataSource]="organizers" multiTemplateDataRows class="mat-elevation-z8">
 
             <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsParticipants">
                 <th mat-header-cell *matHeaderCellDef> {{ column }} </th>

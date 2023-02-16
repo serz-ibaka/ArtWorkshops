@@ -1,0 +1,94 @@
+<app-header-organizer></app-header-organizer>
+
+<div class="flex-center">
+    <mat-card>
+        <div class="flex-center">
+
+            <div class="flex-column">
+                <div class="flex-row">
+                    <div class="flex-center">
+                        <h3>Create new workshop</h3>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="flex-column">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Name</mat-label>
+                            <input matInput [(ngModel)]="workshop.name">
+                        </mat-form-field>
+
+                        <!-- <mat-form-field appearance="fill">
+                            <mat-label>Choose a date</mat-label>
+                            <input matInput [matDatepicker]="picker" [(ngModel)]="workshop.datetime">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field> -->
+                        <mat-form-field appearance="fill">
+                            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date"
+                                [(ngModel)]="workshop.datetime">
+                            <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+                            <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false"
+                                [stepHour]="1" [stepMinute]="1">
+                            </ngx-mat-datetime-picker>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Capacity</mat-label>
+                            <input matInput [(ngModel)]="workshop.capacity" type="number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Place</mat-label>
+                            <input matInput [(ngModel)]="workshop.place">
+                        </mat-form-field>
+
+                    </div>
+                    <div class="flex-column">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Short description</mat-label>
+                            <textarea matInput rows="2" [(ngModel)]="workshop.shortDescription"></textarea>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>LongDescription</mat-label>
+                            <textarea matInput rows="5" [(ngModel)]="workshop.longDescription"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="flex-column">
+                        <app-location-input (locationSelected)="onLocationSelected($event)"></app-location-input>
+                    </div>
+                    <div class="flex-column">
+
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="flex-column">
+                        <h6>Main workshop photo</h6>
+                        <form enctype="multipart/form-data">
+                            <input type="file" (change)="imageInput($event)" accept="image/png, image/jpeg">
+                        </form>
+                    </div>
+                    <div class="flex-column">
+                        <h6>Workshop gallery</h6>
+                        <input type="file" id="gallery" (change)="galleryInput()" accept="image/png, image/jpeg"
+                            multiple>
+                        <div *ngFor="let name of workshop.gallery | keyvalue">
+                            <span>{{name.key}}</span>
+                            <button (click)="removeGallery(name.key)"
+                                mat-icon-button><mat-icon>clear</mat-icon></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="flex-column">
+                        <button mat-raised-button color="primary" (click)="addNewWorkshop()" style="margin: 10px">
+                            Add new workshop
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+</div>

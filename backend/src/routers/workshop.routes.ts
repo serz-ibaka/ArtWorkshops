@@ -4,6 +4,10 @@ import { WorkshopController } from "../controllers/workshop.controller";
 const workshopRouter = express.Router();
 
 workshopRouter
+  .route("/add-new-workshop")
+  .post((req, res) => new WorkshopController().addNewWorkshop(req, res));
+
+workshopRouter
   .route("/get-current-workshops")
   .get((req, res) => new WorkshopController().getCurrentWorkshops(req, res));
 
