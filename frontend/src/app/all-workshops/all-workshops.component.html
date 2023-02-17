@@ -1,0 +1,51 @@
+<div class="flex-center">
+    <mat-card>
+        <div class="flex-column">
+            <div class="flex-row">
+                <div class="flex-column"><mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput [(ngModel)]="name">
+                    </mat-form-field></div>
+                <div class="flex-column">
+                    <button mat-raised-button color="primary" (click)="filterName()">Filter by name</button>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="flex-column"><mat-form-field>
+                        <mat-label>Place</mat-label>
+                        <input matInput [(ngModel)]="place">
+                    </mat-form-field></div>
+                <div class="flex-column">
+                    <button mat-raised-button color="primary" (click)="filterPlace()">Filter by place</button>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="flex-column"><button mat-raised-button color="primary" (click)="filterAll()">Filter by name
+                        and
+                        place</button></div>
+                <div class="flex-column"><button mat-raised-button color="primary" (click)="sortName()">Sort by
+                        name</button></div>
+                <div class="flex-column"><button mat-raised-button color="primary" (click)="sortDate()">Sort by
+                        date</button></div>
+            </div>
+            <mat-card *ngFor="let workshop of workshops; index as i" style="margin: 10px;">
+                <div class="flex-row">
+                    <div class="flex-column">
+                        <img src="{{images[i]}}">
+                    </div>
+                    <div class="flex-column">
+                        <div class="flex-row">
+                            <h3 *ngIf="type == 'unregistered'">{{workshop.name}}</h3>
+                            <a *ngIf="type == 'participant'"
+                                routerLink="/workshop/{{workshop._id}}">{{workshop.name}}</a>
+                        </div>
+                        <div class="flex-row">
+                            {{workshop.place}}, {{datetimeFormat(workshop.datetime)}}
+                            <br> {{workshop.short_description}}
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </mat-card>
+</div>

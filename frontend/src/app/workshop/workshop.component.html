@@ -1,0 +1,43 @@
+<div class="flex-center" *ngIf="workshop != null">
+    <mat-card>
+        <div class="flex-center">
+            <div class="flex-column">
+                <div class="flex-row">
+                    <h4>{{ workshop.name }}</h4>
+                </div>
+                <div class="flex-row">
+                    <h6 style="color: grey;">{{ datetimeFormat(workshop.datetime) }}
+                        <br>{{ workshop.place }}
+                    </h6>
+                </div>
+                <div class="flex-row">
+                    <img src="{{image}}">
+                </div>
+                <div class="flex-row">
+                    {{ workshop.short_description }}
+                </div>
+                <h4>Gallery</h4>
+                <div class="flex-row">
+                    <img *ngFor="let g of gallery; let i = index" [src]="g" [hidden]="currentIndex !== i" />
+                </div>
+
+                <div class="flex-row">
+                    <button mat-icon-button (click)="previousImage()">
+                        <mat-icon>keyboard_arrow_left</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="nextImage()">
+                        <mat-icon>keyboard_arrow_right</mat-icon>
+                    </button>
+                </div>
+
+                <div class="flex-row">
+                    <h4>About</h4>
+                </div>
+                <div class="flex-row">
+                    {{ workshop.long_description }}
+                </div>
+
+            </div>
+        </div>
+    </mat-card>
+</div>

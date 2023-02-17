@@ -20,7 +20,7 @@ export class WorkshopController {
     }
     galleryNames.forEach(async (name) => {
       if (req.body.gallery[name] != "imported") {
-        gallery.push({image_path: `${name}_${datetime}`});
+        gallery.push({ image_path: `${name}_${datetime}` });
         await new Image({
           path: `${name}_${datetime}`,
           content: req.body.gallery[name],
@@ -51,11 +51,39 @@ export class WorkshopController {
     res.json({ status: "ok" });
   };
 
-  getCurrentWorkshops = (req: express.Request, res: express.Response) => {};
+  getCurrentWorkshops = async (req: express.Request, res: express.Response) => {
+    let workshops = await Workshop.find(
+      { $and: [{ datetime: { $gt: Date.now() } }, { status: "active" }] },
+      "name short_description datetime image_path place capacity organizer"
+    );
+    let images = [];
+    for (let i = 0; i < workshops.length; i++) {
+      const image = await Image.findOne({ path: workshops[i].image_path });
+      images.push(image.content);
+    }
+    res.json({ workshops, images });
+  };
 
   getTopWorkshops = (req: express.Request, res: express.Response) => {};
 
-  getWorkshop = (req: express.Request, res: express.Response) => {};
+  getWorkshop = async (req: express.Request, res: express.Response) => {
+    const workshop = await Workshop.findOne({ _id: req.params.id });
+    if (workshop == null) {
+      res.json({ status: "error" });
+    } else {
+      const image = (await Image.findOne({ path: workshop.image_path }))
+        .content;
+      const gallery = [];
+      for (let i = 0; i < workshop.gallery_path.length; i++) {
+        const img = await Image.findOne({
+          path: workshop.gallery_path[i].image_path,
+        });
+        gallery.push(img.content);
+      }
+
+      res.json({ status: "ok", workshop: workshop, image, gallery });
+    }
+  };
 
   applyToWorkshop = (req: express.Request, res: express.Response) => {};
 

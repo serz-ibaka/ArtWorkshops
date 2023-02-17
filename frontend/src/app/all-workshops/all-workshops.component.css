@@ -1,0 +1,10 @@
+a {
+  text-decoration: none;
+  color: black;
+  font-size: 20pt;
+  font-weight: bold;
+}
+
+a:hover {
+  font-size: 22pt;
+}

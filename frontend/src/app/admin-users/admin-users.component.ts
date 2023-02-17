@@ -38,7 +38,6 @@ export class AdminUsersComponent implements OnInit {
     this.adminService.getAllUsers().subscribe((res: any) => {
       if (res['status'] == 'ok') {
         allUsers = res['users'];
-        console.log(allUsers);
         this.participants.data = allUsers.filter(
           (u) => u.status == 'active' && u.type == 'participant'
         );

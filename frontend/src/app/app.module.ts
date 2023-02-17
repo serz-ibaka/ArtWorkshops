@@ -18,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
@@ -59,6 +60,10 @@ import { SetNewPasswordComponent } from './set-new-password/set-new-password.com
 import { AddNewWorkshopComponent } from './add-new-workshop/add-new-workshop.component';
 import { LocationInputComponent } from './location-input/location-input.component';
 import { AdminWorkshopsComponent } from './admin-workshops/admin-workshops.component';
+import { WorkshopComponent } from './workshop/workshop.component';
+import { AllWorkshopsComponent } from './all-workshops/all-workshops.component';
+import { HeaderComponent } from './header/header.component';
+import { WorkshopsParticipantComponent } from './workshops-participant/workshops-participant.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +92,10 @@ import { AdminWorkshopsComponent } from './admin-workshops/admin-workshops.compo
     AddNewWorkshopComponent,
     LocationInputComponent,
     AdminWorkshopsComponent,
+    WorkshopComponent,
+    AllWorkshopsComponent,
+    HeaderComponent,
+    WorkshopsParticipantComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -98,6 +107,7 @@ import { AdminWorkshopsComponent } from './admin-workshops/admin-workshops.compo
     MatFormFieldModule,
     MatInputModule,
     MatDividerModule,
+    MatSliderModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,

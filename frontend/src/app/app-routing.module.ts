@@ -11,18 +11,22 @@ import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component';
 import { SetNewPasswordComponent } from './set-new-password/set-new-password.component';
+import { WorkshopComponent } from './workshop/workshop.component';
+import { WorkshopsParticipantComponent } from './workshops-participant/workshops-participant.component';
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
+  { path: 'set-new-password/:token', component: SetNewPasswordComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
 
   { path: '', component: HomeComponent },
   { path: 'account', component: AccountComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'set-new-password/:token', component: SetNewPasswordComponent },
 
   { path: 'add-new-workshop', component: AddNewWorkshopComponent },
+  { path: 'workshops', component: WorkshopsParticipantComponent },
+  { path: 'workshop/:id', component: WorkshopComponent },
 
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'admin-users', component: AdminUsersComponent },
