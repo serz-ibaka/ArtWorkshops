@@ -67,7 +67,10 @@ export class WorkshopController {
   getTopWorkshops = (req: express.Request, res: express.Response) => {};
 
   getWorkshop = async (req: express.Request, res: express.Response) => {
-    const workshop = await Workshop.findOne({ _id: req.params.id });
+    const workshop = await Workshop.findOne(
+      { _id: req.params.id },
+      "name datetime place location short_description long_description capacity image_path gallery_path"
+    );
     if (workshop == null) {
       res.json({ status: "error" });
     } else {

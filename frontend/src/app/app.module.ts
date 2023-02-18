@@ -64,6 +64,7 @@ import { WorkshopComponent } from './workshop/workshop.component';
 import { AllWorkshopsComponent } from './all-workshops/all-workshops.component';
 import { HeaderComponent } from './header/header.component';
 import { WorkshopsParticipantComponent } from './workshops-participant/workshops-participant.component';
+import { LocationComponent } from './location/location.component';
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import { WorkshopsParticipantComponent } from './workshops-participant/workshops
     AllWorkshopsComponent,
     HeaderComponent,
     WorkshopsParticipantComponent,
+    LocationComponent,
   ],
   imports: [
     AppRoutingModule,
