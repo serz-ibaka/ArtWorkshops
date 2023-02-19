@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSortModule } from '@angular/material/sort';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -65,6 +66,9 @@ import { AllWorkshopsComponent } from './all-workshops/all-workshops.component';
 import { HeaderComponent } from './header/header.component';
 import { WorkshopsParticipantComponent } from './workshops-participant/workshops-participant.component';
 import { LocationComponent } from './location/location.component';
+import { WorkshopsComponent } from './workshops/workshops.component';
+import { WorkshopsOrganizerComponent } from './workshops-organizer/workshops-organizer.component';
+import { LocationEditComponent } from './location-edit/location-edit.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +102,9 @@ import { LocationComponent } from './location/location.component';
     HeaderComponent,
     WorkshopsParticipantComponent,
     LocationComponent,
+    WorkshopsComponent,
+    WorkshopsOrganizerComponent,
+    LocationEditComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -110,6 +117,7 @@ import { LocationComponent } from './location/location.component';
     MatInputModule,
     MatDividerModule,
     MatSliderModule,
+    MatSortModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,

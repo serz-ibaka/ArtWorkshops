@@ -4,9 +4,41 @@
         <app-account-info></app-account-info>
     </mat-tab>
 
-    <mat-tab label="Workshops"></mat-tab>
-    
+    <mat-tab label="Workshops">
+        <div class="flex-center">
+            <table mat-table [dataSource]="participated" matSort (matSortChange)="announceSortChange($any($event))"
+                class="mat-elevation-z8">
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+                        Name
+                    </th>
+                    <td mat-cell *matCellDef="let workshop"> {{workshop.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="place">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by place">
+                        Place
+                    </th>
+                    <td mat-cell *matCellDef="let workshop"> {{workshop.place}} </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="datetime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by datetime">
+                        Datetime
+                    </th>
+                    <td mat-cell *matCellDef="let workshop"> {{datetimeFormat(workshop.datetime)}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+        </div>
+    </mat-tab>
+
     <mat-tab label="Actions"></mat-tab>
-    
+
     <mat-tab label="Messages"></mat-tab>
 </mat-tab-group>

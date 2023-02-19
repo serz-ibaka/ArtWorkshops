@@ -26,7 +26,7 @@ var User = new mongoose.Schema({
       name: { type: String },
       place: { type: String },
       datetime: { type: Date },
-      status: { type: String },
+      id: { type: String },
     },
   ],
   organizerWorkshops: [
@@ -42,12 +42,14 @@ var User = new mongoose.Schema({
       content: { type: String },
       datetime: { type: Date },
       workshopName: { type: String },
+      id: { type: String },
     },
   ],
   likes: [
     {
       datetime: { type: Date },
       workshopName: { type: String },
+      id: { type: String },
     },
   ],
   messages: [

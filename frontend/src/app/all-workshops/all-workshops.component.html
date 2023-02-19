@@ -29,19 +29,103 @@
                         date</button></div>
             </div>
             <mat-card *ngFor="let workshop of workshops; index as i" style="margin: 10px;">
-                <div class="flex-row">
+                <div class="flex-row" [hidden]="workshop.editing">
                     <div class="flex-column">
                         <img src="{{images[i]}}">
                     </div>
                     <div class="flex-column">
                         <div class="flex-row">
                             <h3 *ngIf="type == 'unregistered'">{{workshop.name}}</h3>
-                            <a *ngIf="type == 'participant'"
+                            <a *ngIf="type == 'participant' || type == 'organizer'"
                                 routerLink="/workshop/{{workshop._id}}">{{workshop.name}}</a>
+                        </div>
+                        <div class="flex-row">
+                            by {{workshop.organizer}}
                         </div>
                         <div class="flex-row">
                             {{workshop.place}}, {{datetimeFormat(workshop.datetime)}}
                             <br> {{workshop.short_description}}
+                        </div>
+                        <div class="flex-row">
+                            <button mat-raised-button color="primary" *ngIf="username == workshop.organizer"
+                                (click)="edit(workshop)">Edit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row" *ngIf="editWorkshop != null" [hidden]="!workshop.editing">
+
+                    <div class="flex-column">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Name</mat-label>
+                            <input disabled matInput [(ngModel)]="editWorkshop.name">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill">
+                            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date"
+                                [(ngModel)]="editWorkshop.datetime">
+                            <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+                            <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false" [stepHour]="1"
+                                [stepMinute]="1">
+                            </ngx-mat-datetime-picker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Place</mat-label>
+                            <input matInput [(ngModel)]="editWorkshop.place">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Short description</mat-label>
+                            <textarea matInput rows="2" [(ngModel)]="editWorkshop.short_description"></textarea>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Long description</mat-label>
+                            <textarea matInput rows="6" [(ngModel)]="editWorkshop.long_description"></textarea>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="flex-column">
+                        <app-location-edit *ngIf="workshop.editing" [latitude]="editWorkshop.location.latitude"
+                            [longitude]="editWorkshop.location.longitude"
+                            (locationSelected)="onLocationSelected($event)"></app-location-edit>
+                    </div>
+
+                    <div class="flex-column">
+                        <h6>Image</h6>
+                        <div *ngIf="editWorkshop.image_path != ''">
+                            <span>{{ editWorkshop.image_path }}</span>
+                            <button mat-icon-button (click)="removeImage()"><mat-icon>clear</mat-icon></button>
+                        </div>
+                        <input type="file" accept="image/jpeg, image/png" (change)="addImage($event)">
+                        <h6>Gallery</h6>
+                        <div *ngFor="let name of editWorkshop.gallery_path">
+                            <span>{{name.image_path}}</span>
+                            <button (click)="removeGallery(name)" mat-icon-button><mat-icon>clear</mat-icon></button>
+                        </div>
+                        <input type="file" accept="image/jpeg, image/png" (change)="addGallery($event)">
+                        <button style="margin: 10px;" mat-raised-button color="primary" (click)="exportAsJSON()">Export
+                            as JSON</button>
+                        <button style="margin: 10px;" mat-raised-button color="primary"
+                            (click)="update()">Update</button>
+                        <button style="margin: 10px;" mat-raised-button color="primary"
+                            (click)="cancel()">Cancel</button>
+                        <button style="margin: 10px;" mat-raised-button color="primary"
+                            (click)="cancelWorkshop()">Cancel workshop</button>
+                    </div>
+                </div>
+
+                <div class="flex-row" *ngIf="editWorkshop != null" [hidden]="!workshop.editing">
+                    <h3>Applications</h3>
+                </div>
+                <div class="flex-row" *ngIf="editWorkshop != null" [hidden]="!workshop.editing">
+                    <div class="flex-column" *ngFor="let a of editWorkshop.applications">
+                        <div class="flex-row" *ngIf="a.status == 'pending'">
+                            <h6 style="margin: 10px;">{{a.username}}</h6>
+                            <button style="margin: 10px;" mat-raised-button (click)="acceptUser(a.username)"
+                                color="primary">Accept</button>
+                            <button style="margin: 10px;" mat-raised-button (click)="rejectUser(a.username)"
+                                color="warn">Reject</button>
                         </div>
                     </div>
                 </div>

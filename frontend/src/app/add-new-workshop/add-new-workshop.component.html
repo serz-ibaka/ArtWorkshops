@@ -11,6 +11,9 @@
                     </div>
                 </div>
                 <div class="flex-row">
+                    <h6>Import as JSON</h6> <input type="file" (change)="importJSON($event)">
+                </div>
+                <div class="flex-row">
                     <div class="flex-column">
                         <mat-form-field appearance="fill">
                             <mat-label>Name</mat-label>
@@ -20,8 +23,8 @@
                             <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date"
                                 [(ngModel)]="workshop.datetime">
                             <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
-                            <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false"
-                                [stepHour]="1" [stepMinute]="1">
+                            <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false" [stepHour]="1"
+                                [stepMinute]="1">
                             </ngx-mat-datetime-picker>
                         </mat-form-field>
 

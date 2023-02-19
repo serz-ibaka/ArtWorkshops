@@ -24,6 +24,14 @@ userRouter
   .get((req, res) => new UserController().getAppliedWorkshops(req, res));
 
 userRouter
+  .route("/check-attended")
+  .get((req, res) => new UserController().checkAttended(req, res));
+
+userRouter
+  .route("/cancel-application")
+  .post((req, res) => new UserController().cancelApplication(req, res));
+
+userRouter
   .route("/update-user")
   .post((req, res) => new UserController().updateUser(req, res));
 

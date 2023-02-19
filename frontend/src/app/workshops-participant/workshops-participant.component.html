@@ -1,13 +1,29 @@
 <app-header-participant></app-header-participant>
 
-<mat-tab-group>
-
-    <mat-tab label="Upcoming workshops">
-        <app-all-workshops></app-all-workshops>
-    </mat-tab>
-
-    <mat-tab label="Applied workshops">
-        
-    </mat-tab>
-
-</mat-tab-group>
+<div class="flex-center">
+    <div class="flex-column">
+        <div class="flex-row">
+            <h4>Applied workshops</h4>
+        </div>
+        <mat-card *ngFor="let workshop of workshops; index as i" style="margin: 10px;">
+            <div class="flex-row">
+                <div class="flex-column">
+                    <div class="flex-row">
+                        <h3>{{workshop.name}}</h3>   
+                    </div>
+                    <div class="flex-row">
+                        by {{workshop.organizer}}
+                    </div>
+                    <div class="flex-row">
+                        {{workshop.place}}, {{datetimeFormat(workshop.datetime)}}
+                        <br> {{workshop.short_description}}
+                    </div>
+                    <div class="flex-row">
+                        <button mat-raised-button color="warn" *ngIf="workshop.cancel"
+                            (click)="cancelApplication(workshop)">Cancel application</button>
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+</div>

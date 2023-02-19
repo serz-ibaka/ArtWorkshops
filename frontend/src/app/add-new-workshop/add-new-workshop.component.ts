@@ -31,7 +31,27 @@ export class AddNewWorkshopComponent {
     organizer: localStorage.getItem('username') ?? '',
   };
 
-  importJSON() {}
+  importJSON(event: any) {
+    if (event.target.files.length == 0) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const ws = JSON.parse(reader.result as string);
+      this.workshop.name = ws.name;
+      this.workshop.datetime = ws.datetime;
+      this.workshop.place = ws.place;
+      this.workshop.capacity = ws.capacity.free + ws.capacity.reserved;
+      this.workshop.shortDescription = ws.short_description;
+      this.workshop.longDescription = ws.long_description;
+      this.workshop.image[ws.image_path] = 'imported';
+      ws.gallery_path.forEach((e: any) => {
+        this.workshop.gallery[e.image_path] = 'imported';
+      });
+      this.workshop.gallery_path = ws.gallery_path;
+    };
+    reader.readAsText(event.target.files[0]);
+  }
 
   imageInput(event: any) {
     if (event.target.files.length == 0) {

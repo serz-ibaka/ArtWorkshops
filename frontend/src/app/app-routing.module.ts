@@ -13,6 +13,7 @@ import { RegisterComponent } from './register/register.component';
 import { SetNewPasswordComponent } from './set-new-password/set-new-password.component';
 import { WorkshopComponent } from './workshop/workshop.component';
 import { WorkshopsParticipantComponent } from './workshops-participant/workshops-participant.component';
+import { WorkshopsComponent } from './workshops/workshops.component';
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -25,7 +26,7 @@ const routes: Routes = [
   { path: 'account', component: AccountComponent },
 
   { path: 'add-new-workshop', component: AddNewWorkshopComponent },
-  { path: 'workshops', component: WorkshopsParticipantComponent },
+  { path: 'workshops', component: WorkshopsComponent },
   { path: 'workshop/:id', component: WorkshopComponent },
 
   { path: 'admin-login', component: AdminLoginComponent },

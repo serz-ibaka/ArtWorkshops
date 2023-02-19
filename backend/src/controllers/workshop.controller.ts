@@ -1,6 +1,9 @@
 import express from "express";
 import Image from "../models/image";
 import Workshop from "../models/workshop";
+import User from "../models/user";
+
+import * as nodemailer from "nodemailer";
 
 export class WorkshopController {
   addNewWorkshop = async (req: express.Request, res: express.Response) => {
@@ -69,7 +72,7 @@ export class WorkshopController {
   getWorkshop = async (req: express.Request, res: express.Response) => {
     const workshop = await Workshop.findOne(
       { _id: req.params.id },
-      "name datetime place location short_description long_description capacity image_path gallery_path"
+      "name datetime place location short_description long_description capacity image_path gallery_path applications"
     );
     if (workshop == null) {
       res.json({ status: "error" });
@@ -88,15 +91,104 @@ export class WorkshopController {
     }
   };
 
-  applyToWorkshop = (req: express.Request, res: express.Response) => {};
+  applyToWorkshop = async (req: express.Request, res: express.Response) => {
+    const date = Date.now();
+    const user = await User.findOne(
+      { username: req.body.username },
+      "username firstname lastname email"
+    );
+    await Workshop.updateOne(
+      { _id: req.body.workshop },
+      {
+        $push: {
+          applications: {
+            username: user.username,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+            datetime: date,
+            status: "pending",
+          },
+        },
+      }
+    );
+    res.json({ status: "ok" });
+  };
 
-  subscribeToWorkshop = (req: express.Request, res: express.Response) => {};
+  subscribeToWorkshop = async (req: express.Request, res: express.Response) => {
+    const user = await User.findOne({ username: req.body.username }, "email");
+    await Workshop.updateOne(
+      { _id: req.body.workshop },
+      { $push: { subscribed: { email: user.email } } }
+    );
+    res.json({ status: "ok" });
+  };
 
-  acceptApplication = (req: express.Request, res: express.Response) => {};
+  acceptApplication = async (req: express.Request, res: express.Response) => {
+    const username = req.body.username;
+    const id = req.body.workshop;
+    const workshop = await Workshop.findOneAndUpdate(
+      { _id: id, "applications.username": username },
+      { $set: { "applications.$.status": "accepted" } }
+    );
+    await Workshop.findOneAndUpdate(
+      { _id: id },
+      { $inc: { "capacity.free": -1 } }
+    );
+    await Workshop.findOneAndUpdate(
+      { _id: id },
+      { $inc: { "capacity.reserved": 1 } }
+    );
 
-  declineApplication = (req: express.Request, res: express.Response) => {};
+    await User.updateOne(
+      { username: username },
+      {
+        $push: {
+          participantWorkshops: {
+            name: workshop.name,
+            place: workshop.place,
+            datetime: workshop.datetime,
+            id: id
+          },
+        },
+      }
+    );
+    res.json({ status: "ok" });
+  };
+
+  declineApplication = async (req: express.Request, res: express.Response) => {
+    const username = req.body.username;
+    const id = req.body.workshop;
+    await Workshop.findOneAndUpdate(
+      { _id: id, "applications.username": username },
+      { $set: { "applications.$.status": "rejected" } }
+    );
+    res.json({ status: "ok" });
+  };
 
   editInfo = (req: express.Request, res: express.Response) => {};
 
-  cancelWorkshop = (req: express.Request, res: express.Response) => {};
+  transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "sergejprosic8@gmail.com",
+      pass: "sbopgirjkyklytmi",
+    },
+  });
+
+  cancelWorkshop = async (req: express.Request, res: express.Response) => {
+    const workshop = await Workshop.findByIdAndUpdate(req.body.workshop, {
+      status: "cancelled",
+    });
+    workshop.applications.forEach((a) => {
+      const message = {
+        from: "sergejprosic8@gmail.com",
+        to: a.email,
+        subject: "Workshop cancellation",
+        html: `<p>Workshop ${workshop.name} is cancelled</p>`,
+      };
+      this.transporter.sendMail(message, (error, info) => {});
+    });
+    res.json({ status: "ok" });
+  };
 }

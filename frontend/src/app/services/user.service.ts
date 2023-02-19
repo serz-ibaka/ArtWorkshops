@@ -29,6 +29,14 @@ export class UserService {
     return this.httpClient.get(`${this.uri}/get-applied-workshops/${username}`);
   }
 
+  checkAttended(params: any) {
+    return this.httpClient.get(`${this.uri}/check-attended`, { params });
+  }
+
+  cancelApplication(data: any) {
+    return this.httpClient.post(`${this.uri}/cancel-application`, data);
+  }
+
   updateUser(data: any) {
     return this.httpClient.post(`${this.uri}/update-user`, data);
   }

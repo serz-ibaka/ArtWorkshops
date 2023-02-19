@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LikeService } from '../services/like.service';
+import { UserService } from '../services/user.service';
 import { WorkshopService } from '../services/workshop.service';
 
 @Component({
@@ -10,8 +13,11 @@ import { WorkshopService } from '../services/workshop.service';
 export class WorkshopComponent implements OnInit {
   constructor(
     private workshopService: WorkshopService,
+    private userService: UserService,
+    private likeService: LikeService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -23,14 +29,30 @@ export class WorkshopComponent implements OnInit {
         this.gallery = res['gallery'];
         this.image = res['image'];
         this.workshop = res['workshop'];
+
+        this.userService
+          .checkAttended({ username: this.username, name: this.workshop.name })
+          .subscribe((res: any) => {
+            this.likeable = res['attended'];
+            const allLikes: any[] = res['likes'];
+            console.log(allLikes);
+            this.likes = allLikes.length;
+            this.liked = allLikes.some((x) => x.username == this.username);
+          });
       }
     });
   }
 
+  username = localStorage.getItem('username') ?? '';
   workshop: any | null = null;
   gallery: any | null = null;
   image: any | null = null;
   currentIndex = 0;
+
+  likeable = false;
+  liked = false;
+  likes = 0;
+  color = 'basic';
 
   nextImage() {
     this.currentIndex = (this.currentIndex + 1) % this.gallery.length;
@@ -58,5 +80,61 @@ export class WorkshopComponent implements OnInit {
     )} ${date.toLocaleTimeString('en-US', optionsTime)}`;
 
     return formattedDate;
+  }
+
+  apply() {
+    this.workshopService
+      .applyToWorkshop({
+        username: this.username,
+        workshop: this.workshop._id,
+      })
+      .subscribe((res: any) => {
+        if (res['status'] == 'ok') {
+          this._snackBar.open('You successfully applied for workshop', 'Close');
+        }
+      });
+  }
+
+  subscribe() {
+    this.workshopService
+      .subscribeToWorkshop({
+        username: this.username,
+        workshop: this.workshop._id,
+      })
+      .subscribe((res: any) => {
+        if (res['status'] == 'ok') {
+          this._snackBar.open(
+            'You will receive an email when a spot becomes free',
+            'Close'
+          );
+        }
+      });
+  }
+
+  like() {
+    if (this.liked) {
+      this.likeService
+        .unlikeWorkshop({
+          username: this.username,
+          workshop: this.workshop._id,
+        })
+        .subscribe((res: any) => {
+          this.liked = false;
+          this.likes--;
+          this.color = 'basic';
+        });
+    } else {
+      console.log('asdasdas');
+      this.likeService
+        .likeWorkshop({
+          username: this.username,
+          workshop: this.workshop._id,
+        })
+        .subscribe((res: any) => {
+          this.liked = true;
+          this.color = 'warn';
+          this.likes++;
+        });
+    }
   }
 }

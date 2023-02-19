@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 
 declare var Maptiler: any;
@@ -8,7 +8,7 @@ declare var Maptiler: any;
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.css'],
 })
-export class LocationComponent {
+export class LocationComponent implements OnInit {
   private map: L.Map | null = null;
   private marker: L.Marker | null = null;
 

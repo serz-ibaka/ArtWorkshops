@@ -3,6 +3,7 @@ import Image from "../models/image";
 import User from "../models/user";
 import * as nodemailer from "nodemailer";
 import Token from "../models/token";
+import Workshop from "../models/workshop";
 
 export class UserController {
   transporter = nodemailer.createTransport({
@@ -32,7 +33,77 @@ export class UserController {
 
   getMessages = (req: express.Request, res: express.Response) => {};
 
-  getAppliedWorkshops = (req: express.Request, res: express.Response) => {};
+  getAppliedWorkshops = async (req: express.Request, res: express.Response) => {
+    const workshops = await User.findOne(
+      { username: req.params.username },
+      "participantWorkshops"
+    );
+    res.json({
+      status: "ok",
+      workshops: workshops.participantWorkshops,
+    });
+  };
+
+  cancelApplication = async (req: express.Request, res: express.Response) => {
+    const id = req.body.workshop;
+    const username = req.body.username;
+
+    await Workshop.findOneAndUpdate(
+      { _id: id, "applications.username": username },
+      { $set: { "applications.$.status": "cancelled" } }
+    );
+
+    await User.updateOne(
+      { username: username },
+      {
+        $pull: {
+          participantWorkshops: { id: id },
+        },
+      }
+    );
+
+    await Workshop.findOneAndUpdate(
+      { _id: id },
+      { $inc: { "capacity.free": 1 } }
+    );
+    await Workshop.findOneAndUpdate(
+      { _id: id },
+      { $inc: { "capacity.reserved": -1 } }
+    );
+
+    console.log(id);
+
+    const workshop = await Workshop.findById(id, "name subscribed");
+
+    workshop.subscribed.forEach((s) => {
+      const message = {
+        from: "sergejprosic8@gmail.com",
+        to: s.email,
+        subject: "Recover your password",
+        text: "To recover your email, access the link below. Link will be active next ",
+        html: `<p>There is an open spot for workshop <a href="http://localhost:4200/workshop/${workshop.id}">${workshop.name}</a></p>`,
+      };
+      this.transporter.sendMail(message, (error, info) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+    });
+  };
+
+  checkAttended = async (req: express.Request, res: express.Response) => {
+    const workshop = await Workshop.findOne(
+      { name: req.query.name },
+      "name likes"
+    );
+    if (workshop == null) {
+      res.json({ attended: false });
+    } else {
+      res.json({ attended: true, likes: workshop.likes });
+    }
+  };
 
   updateUser = async (req: express.Request, res: express.Response) => {
     await User.updateOne({ username: req.body.username }, req.body);
