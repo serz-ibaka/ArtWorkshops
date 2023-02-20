@@ -38,7 +38,81 @@
         </div>
     </mat-tab>
 
-    <mat-tab label="Actions"></mat-tab>
+    <mat-tab label="Actions">
+        <div class="flex-center">
+            <div class="flex-column">
+                <div class="flex-row">
+                    <h4>Likes</h4>
+                </div>
+                <div class="flex-row" *ngFor="let like of likes">
+                    <mat-card>
+                        <div class="flex-row">
+                            <div class="flex-column">You liked workshop {{like.workshopName}} on
+                                {{datetimeFormat(like.datetime)}}</div>
+                            <div class="flex-column"><button mat-raised-button (click)="unlike(like)"
+                                    color="warn">Unlike</button></div>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+            <div class="flex-column">
+                <div class="flex-row">
+                    <h4>Comments</h4>
+                </div>
+                <div class="flex-row" *ngFor="let comment of comments">
+                    <mat-card>
+                        <div class="flex-row">
+                            You commented &nbsp; <i>{{comment.content}}</i> &nbsp; on
+                            {{datetimeFormat(comment.datetime)}} on
+                            {{comment.workshopName}}
+                        </div>
+                        <div class="flex-row">
+                            <mat-form-field>
+                                <mat-label>Edit content</mat-label>
+                                <textarea matInput [(ngModel)]="comment.content"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex-row">
+                            <button style="margin: 10px;" mat-raised-button color="primary"
+                                (click)="edit(comment)">Edit</button>
+                            <button style="margin: 10px;" mat-raised-button color="warn"
+                                (click)="deleteComment(comment)">Delete</button>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
 
-    <mat-tab label="Messages"></mat-tab>
+    <mat-tab label="Messages">
+        <div style="width: 400px; overflow-y: scroll;">
+            <div class="flex-column">
+                <div class="flex-row" *ngFor="let chat of chats" style="border: 2px solid #aaa"
+                    (click)="openChat(chat)">
+                    <div class="flex-column">
+                        <img src="{{chat.image}}" style="width: 100px;">
+                    </div>
+                    <div class="flex-column">
+                        <div class="flex-row">
+                            <h4>{{chat.username}}</h4>
+                        </div>
+                        <div class="flex-row">
+                            <h6>{{chat.workshop}}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="position: relative; height: 500px;">
+            <div style="position: absolute; bottom: 0; right: 0; overflow-x: scroll;">
+                <div class="flex-row">
+                    <div class="flex-column" *ngFor="let chat of openChats">
+                        <app-chat [usernameFrom]="username" [usernameTo]="chat.username"
+                            [workshop]="chat.workshopId"></app-chat>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
 </mat-tab-group>

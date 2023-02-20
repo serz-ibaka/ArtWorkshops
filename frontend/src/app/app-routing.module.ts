@@ -5,6 +5,7 @@ import { AddNewWorkshopComponent } from './add-new-workshop/add-new-workshop.com
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { AdminWorkshopsComponent } from './admin-workshops/admin-workshops.component';
+import { BecomeOrganizerComponent } from './become-organizer/become-organizer.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
@@ -28,6 +29,8 @@ const routes: Routes = [
   { path: 'add-new-workshop', component: AddNewWorkshopComponent },
   { path: 'workshops', component: WorkshopsComponent },
   { path: 'workshop/:id', component: WorkshopComponent },
+
+  { path: 'become-organizer', component: BecomeOrganizerComponent },
 
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'admin-users', component: AdminUsersComponent },

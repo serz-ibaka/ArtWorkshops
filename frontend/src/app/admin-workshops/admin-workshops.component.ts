@@ -1,4 +1,10 @@
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
@@ -36,6 +42,9 @@ export class AdminWorkshopsComponent implements OnInit {
         this.activeWorkshops.data = res['workshops'].filter(
           (w: any) => w.status == 'active'
         );
+        this.upgradeRequests = res['workshops'].filter(
+          (w: any) => w.status == 'pending-update'
+        );
       }
     });
   }
@@ -72,36 +81,46 @@ export class AdminWorkshopsComponent implements OnInit {
     'datetime',
     'place',
     'short_description',
+    'organizer',
     'accept',
     'reject',
   ];
 
   acceptWorkshop(_id: string) {
-    const workshop = this.pendingWorkshops.find((w) => w._id == _id);
-    workshop.status = 'active';
-    this.pendingWorkshops = this.pendingWorkshops.filter((w) => w._id != _id);
-    this.activeWorkshops.data = [...this.activeWorkshops.data, workshop]
-    this.adminService
-      .acceptWorkshop({ _id: _id })
-      .subscribe((res: any) => {
-        if (res['status'] == 'ok') {
-          this._snackBar.open(`Workshop accepted`, 'Close');
-        }
-      });
+    this.adminService.acceptWorkshop({ _id: _id }).subscribe((res: any) => {
+      const workshop = this.upgradeRequests.find((w) => w._id == _id);
+      workshop.status = 'active';
+      this.upgradeRequests = this.upgradeRequests.filter((w) => w._id != _id);
+      this.activeWorkshops.data = [...this.activeWorkshops.data, workshop];
+      if (res['status'] == 'ok') {
+        this._snackBar.open(`Workshop accepted`, 'Close');
+      } else {
+        this._snackBar.open(`${res['message']}`, 'Close');
+      }
+    });
   }
 
   rejectWorkshop(_id: string) {
     const workshop = this.pendingWorkshops.find((w) => w._id == _id);
     workshop.status = 'reject';
     this.pendingWorkshops = this.pendingWorkshops.filter((w) => w.id != _id);
-    this.adminService
-      .rejectWorkshop({ _id: _id })
-      .subscribe((res: any) => {
-        if (res['status'] == 'ok') {
-          this._snackBar.open(`Workshop rejected`, 'Close');
-        }
-      });
+    this.adminService.rejectWorkshop({ _id: _id }).subscribe((res: any) => {
+      if (res['status'] == 'ok') {
+        this._snackBar.open(`Workshop rejected`, 'Close');
+      }
+    });
   }
+
+  upgradeRequests: any[] = [];
+  displayedColumnsUpgrade = [
+    'name',
+    'datetime',
+    'place',
+    'short_description',
+    'organizer',
+    'accept',
+    'reject',
+  ];
 
   tabIndex = 0;
   tabChange(event: any) {

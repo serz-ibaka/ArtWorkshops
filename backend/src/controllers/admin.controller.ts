@@ -81,6 +81,27 @@ export class AdminController {
   promoteUser = (req: express.Request, res: express.Response) => {};
 
   acceptWorkshop = async (req: express.Request, res: express.Response) => {
+    const workshop = await Workshop.findById(req.body._id, "organizer status");
+    if (workshop.status == "pending-update") {
+      const user = await User.findOne(
+        { username: workshop.organizer },
+        "participantWorkshops"
+      );
+      if (
+        user.participantWorkshops.some((p) => p.datetime.getTime() > Date.now())
+      ) {
+        res.json({
+          status: "error",
+          message: "User is applied for some workshop",
+        });
+        return;
+      } else {
+        await User.updateOne(
+          { username: workshop.organizer },
+          { type: "organizer" }
+        );
+      }
+    }
     await Workshop.updateOne({ _id: req.body._id }, { status: "active" });
     res.json({ status: "ok" });
   };
@@ -154,8 +175,8 @@ export class AdminController {
 
   getAllWorkshops = async (req: express.Request, res: express.Response) => {
     const workshops = await Workshop.find(
-      { status: { $in: ["active", "pending"] } },
-      "name datetime place location short_description long_description image_path status"
+      { status: { $in: ["active", "pending", "pending-update"] } },
+      "name datetime place location short_description long_description image_path status organizer"
     );
     workshops.forEach(async (w) => {
       w["image"] = await Image.find({ image_path: w.image_path });

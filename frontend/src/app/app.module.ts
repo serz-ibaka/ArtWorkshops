@@ -69,6 +69,8 @@ import { LocationComponent } from './location/location.component';
 import { WorkshopsComponent } from './workshops/workshops.component';
 import { WorkshopsOrganizerComponent } from './workshops-organizer/workshops-organizer.component';
 import { LocationEditComponent } from './location-edit/location-edit.component';
+import { ChatComponent } from './chat/chat.component';
+import { BecomeOrganizerComponent } from './become-organizer/become-organizer.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +107,8 @@ import { LocationEditComponent } from './location-edit/location-edit.component';
     WorkshopsComponent,
     WorkshopsOrganizerComponent,
     LocationEditComponent,
+    ChatComponent,
+    BecomeOrganizerComponent,
   ],
   imports: [
     AppRoutingModule,

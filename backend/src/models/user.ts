@@ -55,7 +55,7 @@ var User = new mongoose.Schema({
   messages: [
     {
       username: { type: String },
-      image_path: { type: String },
+      workshop: { type: String },
       messages: [
         {
           content: { type: String },

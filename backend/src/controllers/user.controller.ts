@@ -29,9 +29,13 @@ export class UserController {
     res.json({ status: "ok", user, image });
   };
 
-  getActions = (req: express.Request, res: express.Response) => {};
-
-  getMessages = (req: express.Request, res: express.Response) => {};
+  getActions = async (req: express.Request, res: express.Response) => {
+    const user = await User.findOne(
+      { username: req.params.username },
+      "comments likes"
+    );
+    res.json({ actions: user });
+  };
 
   getAppliedWorkshops = async (req: express.Request, res: express.Response) => {
     const workshops = await User.findOne(
@@ -71,8 +75,6 @@ export class UserController {
       { $inc: { "capacity.reserved": -1 } }
     );
 
-    console.log(id);
-
     const workshop = await Workshop.findById(id, "name subscribed");
 
     workshop.subscribed.forEach((s) => {
@@ -91,6 +93,8 @@ export class UserController {
         }
       });
     });
+
+    res.json({ status: "ok" });
   };
 
   checkAttended = async (req: express.Request, res: express.Response) => {

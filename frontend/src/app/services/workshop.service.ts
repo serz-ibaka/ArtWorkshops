@@ -48,4 +48,8 @@ export class WorkshopService {
   cancelWorkshop(data: any) {
     return this.httpClient.post(`${this.uri}/cancel-workshop`, data);
   }
+
+  getComments(params: any) {
+    return this.httpClient.get(`${this.uri}/get-comments`, { params });
+  }
 }

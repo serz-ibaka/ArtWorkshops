@@ -43,4 +43,8 @@ workshopRouter
   .route("/cancel-workshop")
   .post((req, res) => new WorkshopController().cancelWorkshop(req, res));
 
+workshopRouter
+  .route("/get-comments")
+  .get((req, res) => new WorkshopController().getComments(req, res));
+
 export default workshopRouter;

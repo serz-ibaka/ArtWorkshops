@@ -16,10 +16,6 @@ userRouter
   .get((req, res) => new UserController().getActions(req, res));
 
 userRouter
-  .route("/get-messages/:username")
-  .get((req, res) => new UserController().getMessages(req, res));
-
-userRouter
   .route("/get-applied-workshops/:username")
   .get((req, res) => new UserController().getAppliedWorkshops(req, res));
 

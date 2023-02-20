@@ -32,6 +32,9 @@ export class WorkshopController {
         gallery.push({ image_path: name });
       }
     });
+
+    const user = await User.findOne({ username: req.body.organizer }, "type");
+
     await new Workshop({
       name: req.body.name,
       datetime: req.body.datetime,
@@ -46,7 +49,7 @@ export class WorkshopController {
         free: req.body.capacity,
         reserved: 0,
       },
-      status: "pending",
+      status: user.type != "participant" ? "pending" : "pending-update",
       organizer: req.body.organizer,
       image_path: image,
       gallery_path: gallery,
@@ -72,7 +75,7 @@ export class WorkshopController {
   getWorkshop = async (req: express.Request, res: express.Response) => {
     const workshop = await Workshop.findOne(
       { _id: req.params.id },
-      "name datetime place location short_description long_description capacity image_path gallery_path applications"
+      "name datetime place location short_description long_description capacity organizer image_path gallery_path applications"
     );
     if (workshop == null) {
       res.json({ status: "error" });
@@ -108,6 +111,24 @@ export class WorkshopController {
             email: user.email,
             datetime: date,
             status: "pending",
+          },
+        },
+      }
+    );
+
+    const workshop = await Workshop.findById(
+      req.body.workshop,
+      "name datetime place"
+    );
+    await User.updateOne(
+      { username: req.body.username },
+      {
+        $push: {
+          participantWorkshops: {
+            name: workshop.name,
+            datetime: workshop.datetime,
+            place: workshop.place,
+            id: workshop._id,
           },
         },
       }
@@ -148,7 +169,7 @@ export class WorkshopController {
             name: workshop.name,
             place: workshop.place,
             datetime: workshop.datetime,
-            id: id
+            id: id,
           },
         },
       }
@@ -190,5 +211,25 @@ export class WorkshopController {
       this.transporter.sendMail(message, (error, info) => {});
     });
     res.json({ status: "ok" });
+  };
+
+  getComments = async (req: express.Request, res: express.Response) => {
+    const id = req.query.workshop;
+    let comments = (await Workshop.findById(id, "comments")).comments;
+    let allComments = [];
+    for (let i = 0; i < comments.length; i++) {
+      const username = comments[i].username;
+      const image_path = (await User.findOne({ username }, "image_path"))
+        .image_path;
+      const image = (await Image.findOne({ image_path: image_path })).content;
+      allComments.push({
+        content: comments[i].content,
+        datetime: comments[i].datetime,
+        username: username,
+        image: image,
+      });
+    }
+
+    return res.json({ status: "ok", comments: allComments });
   };
 }

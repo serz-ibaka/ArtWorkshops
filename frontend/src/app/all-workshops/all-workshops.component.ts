@@ -105,6 +105,7 @@ export class AllWorkshopsComponent implements OnInit {
     this.workshops.forEach((w) => (w.editing = false));
     this.workshopService.getWorkshop(workshop._id).subscribe((res: any) => {
       this.editWorkshop = res['workshop'];
+      console.log(this.editWorkshop)
       workshop.editing = true;
       const ind = this.workshops.findIndex((v) => v._id == workshop._id);
       this.workshops[ind].editing = true;
@@ -184,7 +185,7 @@ export class AllWorkshopsComponent implements OnInit {
         workshop: this.editWorkshop._id,
       })
       .subscribe((res: any) => {
-        this._snackBar.open('User accepted', 'Close');
+        this._snackBar.open('User rejected', 'Close');
         const ind = this.editWorkshop.applications.findIndex(
           (a: any) => a.username == username
         );

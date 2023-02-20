@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CommentService } from '../services/comment.service';
 import { LikeService } from '../services/like.service';
 import { UserService } from '../services/user.service';
 import { WorkshopService } from '../services/workshop.service';
@@ -15,6 +16,7 @@ export class WorkshopComponent implements OnInit {
     private workshopService: WorkshopService,
     private userService: UserService,
     private likeService: LikeService,
+    private commentService: CommentService,
     private router: Router,
     private route: ActivatedRoute,
     private _snackBar: MatSnackBar
@@ -35,9 +37,16 @@ export class WorkshopComponent implements OnInit {
           .subscribe((res: any) => {
             this.likeable = res['attended'];
             const allLikes: any[] = res['likes'];
-            console.log(allLikes);
             this.likes = allLikes.length;
             this.liked = allLikes.some((x) => x.username == this.username);
+          });
+
+        this.workshopService
+          .getComments({
+            workshop: this.workshop._id,
+          })
+          .subscribe((res: any) => {
+            this.comments = res['comments'];
           });
       }
     });
@@ -53,6 +62,8 @@ export class WorkshopComponent implements OnInit {
   liked = false;
   likes = 0;
   color = 'basic';
+
+  comments: any[] = [];
 
   nextImage() {
     this.currentIndex = (this.currentIndex + 1) % this.gallery.length;
@@ -124,7 +135,6 @@ export class WorkshopComponent implements OnInit {
           this.color = 'basic';
         });
     } else {
-      console.log('asdasdas');
       this.likeService
         .likeWorkshop({
           username: this.username,
@@ -136,5 +146,25 @@ export class WorkshopComponent implements OnInit {
           this.likes++;
         });
     }
+  }
+
+  content = '';
+  comment() {
+    this.commentService
+      .postComment({
+        content: this.content,
+        workshop: this.workshop._id,
+        username: this.username,
+      })
+      .subscribe((res: any) => {
+        this._snackBar.open('Comment posted', 'Close');
+        this.comments.push({
+          content: this.content,
+          image: res['image'],
+          username: this.username,
+          datetime: res['datetime'],
+        });
+        this.content = '';
+      });
   }
 }

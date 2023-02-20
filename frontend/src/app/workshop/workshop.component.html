@@ -60,9 +60,40 @@
                     </div>
                 </div>
                 <div class="flex-row" *ngIf="likeable">
-                    <button mat-icon-button [color]="color" (click)="like()"><mat-icon>favorite</mat-icon></button>
+                    <span>
+                        <button mat-icon-button [color]="color" (click)="like()"><mat-icon>favorite</mat-icon></button>
+                        {{likes}}</span>
+                    <span>
+                        <button mat-icon-button color="basic"><mat-icon>comment</mat-icon></button>
+                        {{comments.length}}</span>
+                </div>
+                <div class="flex-row">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Comment</mat-label>
+                        <textarea matInput [(ngModel)]="content" rows="1"></textarea>
+                    </mat-form-field>
+                    <button style="margin: 10px" mat-raised-button color="primary" (click)="comment()">Comment</button>
+                </div>
+                <div class="flex-row" *ngFor="let comment of comments">
+                    <mat-card style="width: 100%;">
+                        <div class="flex-row">
+                            <div class="flex-column">
+                                <img src="{{comment.image}}" style="width: 80px; border-radius: 40px;">
+                            </div>
+                            <div class="flex-column">
+                                <div class="flex-row">{{comment.username}} &nbsp; <p style="color: grey;">
+                                        {{datetimeFormat(comment.datetime)}}</p>
+                                </div>
+                                <div class="flex-row">{{comment.content}}</div>
+                            </div>
+                        </div>
+                    </mat-card>
                 </div>
             </div>
         </div>
     </mat-card>
+
+    <div style="position: fixed; bottom: 0; right: 0;">
+        <app-chat [usernameTo]="workshop.organizer" [usernameFrom]="username" [workshop]="workshop._id"></app-chat>
+    </div>
 </div>
